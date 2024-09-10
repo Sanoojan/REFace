@@ -10,9 +10,9 @@ This repository gives the official implementation of Realistic and Efficient Fac
 - *2023-09-10* Release test benchmark.
 
 ## Todo
-- *Upload checkpoints
-- *Upload other dependencies
-- *Clean code
+- Upload checkpoints
+- Upload other dependencies
+- Clean code
 
 
 
