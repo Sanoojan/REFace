@@ -36,4 +36,7 @@ niqe
 **/*.pyc
 
 
+#data
+dataset/*
+
 
