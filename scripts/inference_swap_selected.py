@@ -317,7 +317,7 @@ def main():
         "--src_folder",
         type=str,
         help="src_image",
-        default="/share/data/drive_3/Sanoojan/needed/Paint_for_swap/examples/faceswap/source.jpg"
+        default="examples/faceswap/source.jpg"
     )
     parser.add_argument(
         "--src_image_mask",
@@ -338,7 +338,7 @@ def main():
     parser.add_argument(
         "--ckpt",
         type=str,
-        default="models/Paint-by-Example/ID_Landmark_CLIP_reconstruct_img_train/PBE/celebA/2023-10-07T21-09-06_v4_reconstruct_img_train/checkpoints/last.ckpt",
+        default="models/Face-in-Fusion/checkpoints/last.ckpt",
         help="path to checkpoint of model",
     )
     parser.add_argument(

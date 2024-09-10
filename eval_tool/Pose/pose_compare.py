@@ -61,7 +61,7 @@ parser.add_argument('--device', type=str, default=None,
 #                     help=('Dimensionality of Inception features to use. '
 #                           'By default, uses pool3 features'))
 parser.add_argument('path', type=str, nargs=2,
-                    default=['/share/data/drive_3/Sanoojan/needed/Paint_for_swap/dataset/FaceData/CelebAMask-HQ/CelebA-HQ-img', 'results/test_bench/results'],
+                    default=['dataset/FaceData/CelebAMask-HQ/CelebA-HQ-img', 'results/test_bench/results'],
                     help=('Paths to the generated images or '
                           'to .npz statistic files'))
 

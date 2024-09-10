@@ -125,7 +125,7 @@ data:
           target: ldm.data.celebA.CelebAdataset
           params:
               state: test
-              dataset_dir: /share/data/drive_3/Sanoojan/needed/Paint_for_swap/dataset/FaceData/CelebAMask-HQ/
+              dataset_dir: dataset/FaceData/CelebAMask-HQ/
               arbitrary_mask_percent: 0.5
               image_size: 512
               gray_outer_mask: True

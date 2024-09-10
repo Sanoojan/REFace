@@ -52,7 +52,7 @@ def get_parser(**parser_kwargs):
         type=str,
         const=True,
         default="",
-        # default="models/Paint-by-Example/v4_reconstruct_img_train_2_step_multi_false_UN_NORM_CLIP_CORRECT/PBE/celebA/2024-01-24T13-41-55_v4_reconstruct_img_train_2_step_multi_false/checkpoints/epoch=000031.ckpt",
+        # default="models/Face-in-Fusion/checkpoints/last.ckpt",
         nargs="?",
         help="resume from logdir or checkpoint in logdir",
     )
@@ -123,7 +123,7 @@ def get_parser(**parser_kwargs):
         "-l",
         "--logdir",
         type=str,
-        default="models/Paint-by-Example/Debug",
+        default="models/Face-in-Fusion/Debug",
         help="directory for logging dat shit",
     )
     parser.add_argument(

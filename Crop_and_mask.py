@@ -191,7 +191,7 @@ def main():
     parser.add_argument(
         "--ckpt",
         type=str,
-        default="models/Paint-by-Example/ID_Landmark_CLIP_reconstruct_img_train/PBE/celebA/2023-10-07T21-09-06_v4_reconstruct_img_train/checkpoints/last.ckpt",
+        default="models/Face-in-Fusion/checkpoints/last.ckpt",
         help="path to checkpoint of model",
     )
     parser.add_argument(

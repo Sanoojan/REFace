@@ -24,7 +24,7 @@ from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionS
 from transformers import AutoFeatureExtractor
 import clip
 from torchvision.transforms import Resize
-wm = "Paint-by-Example"
+wm = "Face-in-Fusion"
 wm_encoder = WatermarkEncoder()
 wm_encoder.set_watermark('bytes', wm.encode('utf-8'))
 safety_model_id = "CompVis/stable-diffusion-safety-checker"
@@ -233,7 +233,7 @@ def main():
     parser.add_argument(
         "--ckpt",
         type=str,
-        default="/share/data/drive_3/Sanoojan/needed/Paint_for_swap/models/Paint-by-Example/finetune/PBE/celebA/2023-09-13T22-14-47_v2/checkpoints/last.ckpt",
+        default="models/Face-in-Fusion/checkpoints/last.ckpt",
         help="path to checkpoint of model",
     )
     parser.add_argument(

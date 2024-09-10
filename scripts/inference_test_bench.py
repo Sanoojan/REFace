@@ -286,13 +286,13 @@ def main():
     parser.add_argument(
         "--config",
         type=str,
-        default="models/Paint-by-Example/v4_img_train_2_step_multi_false_UN_NORM_CLIP_CORRECT_LPIPS/PBE/celebA/2024-02-05T22-04-36_v4_reconstruct_img_train_2_step_multi_false_with_LPIPS/configs/2024-02-05T22-04-36-project.yaml",
+        default="models/Face-in-Fusion/configs/project_ffhq.yaml",
         help="path to config which constructs model",
     )
     parser.add_argument(
         "--ckpt",
         type=str,
-        default="models/Paint-by-Example/v4_img_train_2_step_multi_false_UN_NORM_CLIP_CORRECT_LPIPS/PBE/celebA/2024-02-05T22-04-36_v4_reconstruct_img_train_2_step_multi_false_with_LPIPS/checkpoints/last.ckpt",
+        default="models/Face-in-Fusion/checkpoints/last.ckpt",
         help="path to checkpoint of model",
     )
     parser.add_argument(
