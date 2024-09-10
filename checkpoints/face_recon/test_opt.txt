@@ -1,0 +1,35 @@
+----------------- Options ---------------
+                add_image: True                          
+               batch_size: 1                             
+               bfm_folder: eval_tool/Deep3DFaceRecon_pytorch/BFM
+                bfm_model: BFM_model_front.mat           
+                 camera_d: 10.0                          
+                   center: 112.0                         
+          checkpoints_dir: ./checkpoints                 
+             dataset_mode: None                          
+                 ddp_port: 12355                         
+                   device: None                          
+        display_per_batch: True                          
+                    epoch: latest                        
+          eval_batch_nums: inf                           
+                    focal: 1015.0                        
+                  gpu_ids: 0                             
+               img_folder: examples                      
+                init_path: checkpoints/init_model/resnet50-0676ba61.pth
+                  isTrain: False                         	[default: None]
+                     mask: True                          
+                    model: facerecon                     
+                     name: face_recon                    
+                net_recon: resnet50                      
+              num_workers: None                          
+                    phase: test                          
+                   suffix:                               
+                  use_ddp: False                         	[default: True]
+              use_last_fc: False                         
+               use_opengl: True                          
+                  verbose: False                         
+           vis_batch_nums: 1                             
+               world_size: 1                             
+                    z_far: 15.0                          
+                   z_near: 5.0                           
+----------------- End -------------------
