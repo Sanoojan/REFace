@@ -1,11 +1,15 @@
-# Face-in-Fusion
+# REFace
 
 This repository gives the official implementation of Realistic and Efficient Face Swapping: A Unified Approach with Diffusion Models (WACV 2025)
 
 
 ## Abstract
->Despite promising progress in face swapping task, realistic swapped images remain elusive, often marred by artifacts, particularly in scenarios involving high pose variation, color differences, and occlusion. To address these issues, we propose a novel approach that better harnesses diffusion models for face-swapping by making following core contributions. (a) We propose to re-frame the face-swapping task as a self-supervised, train-time inpainting problem, enhancing the identity transfer while blending with the target image. (b) We introduce a multi-step Denoising Diffusion Implicit Model (DDIM) sampling during training, reinforcing identity and perceptual similarities. (c) Third, we introduce CLIP feature disentanglement to extract pose, expression, and lighting information from the target image, improving fidelity. (d) Further, we introduce a mask shuffling technique during inpainting training, which allows us to create a so-called universal model for swapping, with an additional feature of head swapping. Ours can swap hair and even accessories, beyond traditional face swapping. Unlike prior works reliant on multiple off-the-shelf models, ours is a relatively unified approach and so it is resilient to errors in other off-the-shelf models. Extensive experiments on FFHQ and CelebA datasets validate the efficacy and robustness of our approach, showcasing high-fidelity, realistic face-swapping with minimal inference time. Our code is available here (https://github.com/Sanoojan/Face-in-Fusion)
+>Despite promising progress in face swapping task, realistic swapped images remain elusive, often marred by artifacts, particularly in scenarios involving high pose variation, color differences, and occlusion. To address these issues, we propose a novel approach that better harnesses diffusion models for face-swapping by making following core contributions. (a) We propose to re-frame the face-swapping task as a self-supervised, train-time inpainting problem, enhancing the identity transfer while blending with the target image. (b) We introduce a multi-step Denoising Diffusion Implicit Model (DDIM) sampling during training, reinforcing identity and perceptual similarities. (c) Third, we introduce CLIP feature disentanglement to extract pose, expression, and lighting information from the target image, improving fidelity. (d) Further, we introduce a mask shuffling technique during inpainting training, which allows us to create a so-called universal model for swapping, with an additional feature of head swapping. Ours can swap hair and even accessories, beyond traditional face swapping. Unlike prior works reliant on multiple off-the-shelf models, ours is a relatively unified approach and so it is resilient to errors in other off-the-shelf models. Extensive experiments on FFHQ and CelebA datasets validate the efficacy and robustness of our approach, showcasing high-fidelity, realistic face-swapping with minimal inference time. Our code is available here (https://github.com/Sanoojan/REFace)
 >
+
+![Example](assets/teaser2.png)
+
+
 ## News
 - *2024-09-10* Release training code.
 - *2023-09-10* Release test benchmark.
@@ -18,12 +22,12 @@ This repository gives the official implementation of Realistic and Efficient Fac
 
 
 ## Requirements
-A suitable [conda](https://conda.io/) environment named `Face-in-Fusion` can be created
+A suitable [conda](https://conda.io/) environment named `REFace` can be created
 and activated with:
 
 ```
 conda env create -f environment.yaml
-conda activate Face-in-Fusion
+conda activate REFace
 ```
 
 ## Pretrained Model
@@ -83,7 +87,7 @@ python scripts/modify_checkpoints.py
 To train a new model on Open-Images, you can use `main.py`. For example,
 ```
 python -u main_swap.py \
---logdir models/Face-in-Fusion/ \
+--logdir models/REFace/ \
 --pretrained_model pretrained_models/sd-v1-4-modified-9channel.ckpt \
 --base configs/train.yaml \
 --scale_lr False 

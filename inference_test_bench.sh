@@ -6,8 +6,8 @@ Results_out="results_FINALS/${name}/results"
 Write_results="Quantitative_FINALS/P4s/${name}"
 device=3
 
-CONFIG="models/Face-in-Fusion/configs/project_ffhq.yaml"
-CKPT="models/Face-in-Fusion/checkpoints/last.ckpt"
+CONFIG="models/REFace/configs/project_ffhq.yaml"
+CKPT="models/REFace/checkpoints/last.ckpt"
 source_path="dataset/FaceData/CelebAMask-HQ/Val"
 target_path="dataset/FaceData/CelebAMask-HQ/Val_target"
 source_mask_path="dataset/FaceData/CelebAMask-HQ/src_mask"

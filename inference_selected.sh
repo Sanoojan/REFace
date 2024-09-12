@@ -7,8 +7,8 @@ Results_out="examples/FaceSwap/${name}/results/results"
 device=1
 
 
-CONFIG="models/Face-in-Fusion/configs/project_ffhq.yaml"
-CKPT="models/Face-in-Fusion/checkpoints/last.ckpt"
+CONFIG="models/REFace/configs/project_ffhq.yaml"
+CKPT="models/REFace/checkpoints/last.ckpt"
 
 target_path="examples/FaceSwap/Target"
 source_path="examples/FaceSwap/Source"

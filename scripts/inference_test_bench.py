@@ -286,13 +286,13 @@ def main():
     parser.add_argument(
         "--config",
         type=str,
-        default="models/Face-in-Fusion/configs/project_ffhq.yaml",
+        default="models/REFace/configs/project_ffhq.yaml",
         help="path to config which constructs model",
     )
     parser.add_argument(
         "--ckpt",
         type=str,
-        default="models/Face-in-Fusion/checkpoints/last.ckpt",
+        default="models/REFace/checkpoints/last.ckpt",
         help="path to checkpoint of model",
     )
     parser.add_argument(

@@ -1,4 +1,4 @@
-name: Face-in-Fusion
+name: REFace
 channels:
   - pytorch
   - conda-forge

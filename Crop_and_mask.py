@@ -191,7 +191,7 @@ def main():
     parser.add_argument(
         "--ckpt",
         type=str,
-        default="models/Face-in-Fusion/checkpoints/last.ckpt",
+        default="models/REFace/checkpoints/last.ckpt",
         help="path to checkpoint of model",
     )
     parser.add_argument(

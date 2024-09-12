@@ -24,7 +24,7 @@ from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionS
 from transformers import AutoFeatureExtractor
 import clip
 from torchvision.transforms import Resize
-wm = "Face-in-Fusion"
+wm = "REFace"
 wm_encoder = WatermarkEncoder()
 wm_encoder.set_watermark('bytes', wm.encode('utf-8'))
 safety_model_id = "CompVis/stable-diffusion-safety-checker"
@@ -233,7 +233,7 @@ def main():
     parser.add_argument(
         "--ckpt",
         type=str,
-        default="models/Face-in-Fusion/checkpoints/last.ckpt",
+        default="models/REFace/checkpoints/last.ckpt",
         help="path to checkpoint of model",
     )
     parser.add_argument(

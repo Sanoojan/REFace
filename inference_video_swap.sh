@@ -9,8 +9,8 @@ Results_out="results_video/${name}/results"
 # Write_results="results/quantitative/P4s/${name}"
 device=4
 
-CONFIG="models/Face-in-Fusion/configs/project_ffhq.yaml"
-CKPT="models/Face-in-Fusion/checkpoints/last.ckpt"
+CONFIG="models/REFace/configs/project_ffhq.yaml"
+CKPT="models/REFace/checkpoints/last.ckpt"
 
 
 current_time=$(date +"%Y%m%d_%H%M%S")

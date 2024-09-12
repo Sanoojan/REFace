@@ -52,7 +52,7 @@ def get_parser(**parser_kwargs):
         type=str,
         const=True,
         default="",
-        # default="models/Face-in-Fusion/checkpoints/last.ckpt",
+        # default="models/REFace/checkpoints/last.ckpt",
         nargs="?",
         help="resume from logdir or checkpoint in logdir",
     )
@@ -123,7 +123,7 @@ def get_parser(**parser_kwargs):
         "-l",
         "--logdir",
         type=str,
-        default="models/Face-in-Fusion/Debug",
+        default="models/REFace/Debug",
         help="directory for logging dat shit",
     )
     parser.add_argument(
