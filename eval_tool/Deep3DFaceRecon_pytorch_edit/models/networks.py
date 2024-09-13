@@ -1,4 +1,4 @@
-"""This script defines deep neural networks for Deep3DFaceRecon_pytorch
+"""This script defines deep neural networks for Deep3DFaceRecon_pytorch_edit
 """
 
 import os

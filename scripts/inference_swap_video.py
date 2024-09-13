@@ -359,7 +359,7 @@ def main():
     )
     
     parser.add_argument('--faceParser_name', default='default', type=str, help='face parser name, [ default | segnext] is currently supported.')
-    parser.add_argument('--faceParsing_ckpt', type=str, default="pretrained/face_parsing/79999_iter.pth")  
+    parser.add_argument('--faceParsing_ckpt', type=str, default="Other_dependencies/face_parsing/79999_iter.pth")  
     parser.add_argument('--segnext_config', default='', type=str, help='Path to pre-trained SegNeXt faceParser configuration file, '
                                                                         'this option is valid when --faceParsing_ckpt=segenext')
             

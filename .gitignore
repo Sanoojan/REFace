@@ -6,26 +6,28 @@ models/*
 #Example image outputs
 examples/FaceSwap/Swap_outs/*
 
-#face parsing model (segmentation)
-pretrained/face_parsing/79999_iter.pth
+#face parsing model (segmentation) Done
+Other_dependencies/face_parsing/79999_iter.pth
 
-#stable_diffsuin models
+
+#stable_diffsuin models Done
 pretrained_models/sd-v1-4.ckpt
 pretrained_models/sd-v1-4-modified-9channel.ckpt
 
-# Paint-by-example model
+# Paint-by-example model Done
 checkpoints/model.ckpt
 
-# Expression model (For eval)
-checkpoints/face_recon/epoch_latest.pth
+# Expression model (For quantitative analysis only)  Not used
+Other_dependencies/face_recon/epoch_latest.pth
+
 
 # Arcface model 
 Other_dependencies/arcface/model_ir_se50.pth
 
-# pose model (For eval only)
-eval_tool/Face_rec_models/hopenet_robust_alpha1.pkl
+# pose model (For quantitative analysis only)
+Other_dependencies/Hopenet_pose/hopenet_robust_alpha1.pkl
 
-# Landmark detection model (For train only)
+# Landmark detection model 
 Other_dependencies/DLIB_landmark_det/shape_predictor_68_face_landmarks.dat
 
 # Qantitative results
@@ -41,6 +43,7 @@ dataset/*
 
 
 **/*.mat
-eval_tool/Deep3DFaceRecon_pytorch_edit/DeepxFace/epoch_20.pth
-eval_tool/Deep3DFaceRecon_pytorch_edit/BFM/Exp_Pca.bin
+
+
+
 

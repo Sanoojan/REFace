@@ -1,4 +1,4 @@
-"""This script defines the parametric 3d face model for Deep3DFaceRecon_pytorch
+"""This script defines the parametric 3d face model for Deep3DFaceRecon_pytorch_edit
 """
 
 import numpy as np
@@ -25,7 +25,7 @@ class SH:
 
 class ParametricFaceModel:
     def __init__(self, 
-                bfm_folder='eval_tool/Deep3DFaceRecon_pytorch/BFM', 
+                bfm_folder='eval_tool/Deep3DFaceRecon_pytorch_edit/BFM', 
                 recenter=True,
                 camera_distance=10.,
                 init_lit=np.array([

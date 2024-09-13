@@ -19,7 +19,7 @@ See our template model class 'template_model.py' for more details.
 """
 
 import sys
-sys.path.append('eval_tool/Deep3DFaceRecon_pytorch')
+sys.path.append('eval_tool/Deep3DFaceRecon_pytorch_edit')
 
 import importlib
 from models.base_model import BaseModel

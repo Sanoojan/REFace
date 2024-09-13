@@ -1,4 +1,4 @@
-"""This script defines the base network model for Deep3DFaceRecon_pytorch
+"""This script defines the base network model for Deep3DFaceRecon_pytorch_edit
 """
 
 import os

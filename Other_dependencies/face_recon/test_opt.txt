@@ -1,11 +1,11 @@
 ----------------- Options ---------------
                 add_image: True                          
                batch_size: 1                             
-               bfm_folder: eval_tool/Deep3DFaceRecon_pytorch/BFM
+               bfm_folder: eval_tool/Deep3DFaceRecon_pytorch_edit/BFM
                 bfm_model: BFM_model_front.mat           
                  camera_d: 10.0                          
                    center: 112.0                         
-          checkpoints_dir: ./checkpoints                 
+          checkpoints_dir: Other_dependencies            
              dataset_mode: None                          
                  ddp_port: 12355                         
                    device: None                          

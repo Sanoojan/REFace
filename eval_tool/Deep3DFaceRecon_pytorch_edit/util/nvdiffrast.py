@@ -1,4 +1,4 @@
-"""This script is the differentiable renderer for Deep3DFaceRecon_pytorch
+"""This script is the differentiable renderer for Deep3DFaceRecon_pytorch_edit
     Attention, antialiasing step is missing in current version.
 """
 

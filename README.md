@@ -33,31 +33,32 @@ conda activate REFace
 
 ## Pretrained Model
 
+For inference purpose
 
 
 ## Testing
 
-To sample from our model, you can use `scripts/inference.py`. For example, 
+To test our model on a dataset with facial masks (), you can use `scripts/inference_test_bench.py`. For example, 
 ```
-python scripts/inference.py \
---plms --outdir results \
---config configs/v1.yaml \
---ckpt checkpoints/model.ckpt \
---image_path examples/image/example_1.png \
---mask_path examples/mask/example_1.png \
---reference_path examples/reference/example_1.jpg \
---seed 321 \
---scale 5
+CUDA_VISIBLE_DEVICES=${device} python scripts/inference_test_bench.py \
+    --outdir "${Results_dir}" \
+    --config "${CONFIG}" \
+    --ckpt "${CKPT}" \
+    --scale 3.5 \
+    --n_samples 10 \
+    --device_ID ${device} \
+    --dataset "CelebA" \
+    --ddim_steps 50
 ```
 or simply run:
 ```
-sh test.sh
+sh inference_test_bench.sh
 ```
-Visualization of inputs and output:
+For a choosen folder of source and targets do faceswapping run this:
+```
+sh inference_selected.sh
+```
 
-![](figure/result_1.png)
-![](figure/result_2.png)
-![](figure/result_3.png)
 
 ## Training
 
@@ -113,7 +114,15 @@ bash inference_test_bench.sh
 ## Citing Us
 
 ```
-
+@misc{baliah2024realisticefficientfaceswapping,
+title={Realistic and Efficient Face Swapping: A Unified Approach with Diffusion Models},
+author={Sanoojan Baliah and Qinliang Lin and Shengcai Liao and Xiaodan Liang and Muhammad Haris Khan},
+year={2024},
+eprint={2409.07269},
+archivePrefix={arXiv},
+primaryClass={cs.CV},
+url={https://arxiv.org/abs/2409.07269},
+}
 ```
 
 ## Acknowledgements

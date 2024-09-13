@@ -303,7 +303,7 @@ def calculate_id_given_paths(paths, batch_size, device, dims, num_workers=1):
     
     hopenet = hopenet1.Hopenet(models.resnet.Bottleneck, [3, 4, 6, 3], 66)
     print('Loading hopenet')
-    hopenet_state_dict = torch.load('eval_tool/Face_rec_models/hopenet_robust_alpha1.pkl')
+    hopenet_state_dict = torch.load('Other_dependencies/Hopenet_pose/hopenet_robust_alpha1.pkl')
     hopenet.load_state_dict(hopenet_state_dict)
     if torch.cuda.is_available():
         hopenet = hopenet.cuda()

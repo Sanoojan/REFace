@@ -1,4 +1,4 @@
-"""This script contains the image preprocessing code for Deep3DFaceRecon_pytorch
+"""This script contains the image preprocessing code for Deep3DFaceRecon_pytorch_edit
 """
 
 import numpy as np

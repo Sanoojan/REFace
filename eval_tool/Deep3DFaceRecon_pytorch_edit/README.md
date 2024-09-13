@@ -62,7 +62,7 @@ The pytorch implementation achieves better visual consistency with the input ima
 </p>
 
 ### ● Speed
-The training speed is on par with the original tensorflow implementation. For more information, see [here](https://github.com/sicxu/Deep3DFaceRecon_pytorch#train-the-face-reconstruction-network).
+The training speed is on par with the original tensorflow implementation. For more information, see [here](https://github.com/sicxu/Deep3DFaceRecon_pytorch_edit#train-the-face-reconstruction-network).
 
 ## Major changes
 
@@ -88,8 +88,8 @@ We use an extra high quality face image dataset [FFHQ](https://github.com/NVlabs
 ## Installation
 1. Clone the repository and set up a conda environment with all dependencies as follows:
 ```
-git clone https://github.com/sicxu/Deep3DFaceRecon_pytorch.git
-cd Deep3DFaceRecon_pytorch
+git clone https://github.com/sicxu/Deep3DFaceRecon_pytorch_edit.git
+cd Deep3DFaceRecon_pytorch_edit
 conda env create -f environment.yml
 source activate deep3d_pytorch
 ```
@@ -97,13 +97,13 @@ source activate deep3d_pytorch
 2. Install Nvdiffrast library:
 ```
 git clone https://github.com/NVlabs/nvdiffrast
-cd nvdiffrast    # ./Deep3DFaceRecon_pytorch/nvdiffrast
+cd nvdiffrast    # ./Deep3DFaceRecon_pytorch_edit/nvdiffrast
 pip install .
 ```
 
 3. Install Arcface Pytorch:
 ```
-cd ..    # ./Deep3DFaceRecon_pytorch
+cd ..    # ./Deep3DFaceRecon_pytorch_edit
 git clone https://github.com/deepinsight/insightface.git
 cp -r ./insightface/recognition/arcface_torch ./models/
 ```
@@ -112,7 +112,7 @@ cp -r ./insightface/recognition/arcface_torch ./models/
 ### Prepare prerequisite models
 1. Our method uses [Basel Face Model 2009 (BFM09)](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-0&id=basel_face_model) to represent 3d faces. Get access to BFM09 using this [link](https://faces.dmi.unibas.ch/bfm/main.php?nav=1-2&id=downloads). After getting the access, download "01_MorphableModel.mat". In addition, we use an Expression Basis provided by [Guo et al.](https://github.com/Juyong/3DFace). Download the Expression Basis (Exp_Pca.bin) using this [link (google drive)](https://drive.google.com/file/d/1bw5Xf8C12pWmcMhNEu6PtsYVZkVucEN6/view?usp=sharing). Organize all files into the following structure:
 ```
-Deep3DFaceRecon_pytorch
+Deep3DFaceRecon_pytorch_edit
 │
 └─── BFM
     │
@@ -126,7 +126,7 @@ Deep3DFaceRecon_pytorch
 [LFW](http://vis-www.cs.umass.edu/lfw/), [300WLP](http://www.cbsr.ia.ac.cn/users/xiangyuzhu/projects/3DDFA/main.htm),
 [IJB-A](https://www.nist.gov/programs-projects/face-challenges), [LS3D-W](https://www.adrianbulat.com/face-alignment), and [FFHQ](https://github.com/NVlabs/ffhq-dataset) datasets. Download the pre-trained model using this [link (google drive)](https://drive.google.com/drive/folders/1liaIxn9smpudjjqMaWWRpP0mXRW_qRPP?usp=sharing) and organize the directory into the following structure:
 ```
-Deep3DFaceRecon_pytorch
+Deep3DFaceRecon_pytorch_edit
 │
 └─── checkpoints
     │
@@ -139,7 +139,7 @@ Deep3DFaceRecon_pytorch
 ### Test with custom images
 To reconstruct 3d faces from test images, organize the test image folder as follows:
 ```
-Deep3DFaceRecon_pytorch
+Deep3DFaceRecon_pytorch_edit
 │
 └─── <folder_to_test_images>
     │
@@ -159,7 +159,7 @@ python test.py --name=<model_name> --epoch=20 --img_folder=<folder_to_test_image
 # get reconstruction results of example images
 python test.py --name=<model_name> --epoch=20 --img_folder=./datasets/examples
 ```
-**_Following [#108](https://github.com/sicxu/Deep3DFaceRecon_pytorch/issues/108), if you don't have OpenGL environment, you can simply add "--use_opengl False" to use CUDA context. Make sure you have updated the nvdiffrast to the latest version._**
+**_Following [#108](https://github.com/sicxu/Deep3DFaceRecon_pytorch_edit/issues/108), if you don't have OpenGL environment, you can simply add "--use_opengl False" to use CUDA context. Make sure you have updated the nvdiffrast to the latest version._**
 
 Results will be saved into ./checkpoints/<model_name>/results/<folder_to_test_images>, which contain the following files:
 | \*.png | A combination of cropped input image, reconstructed image, and visualization of projected landmarks.
@@ -171,7 +171,7 @@ Results will be saved into ./checkpoints/<model_name>/results/<folder_to_test_im
 ### Prepare prerequisite models
 1. We rely on [Arcface](https://github.com/deepinsight/insightface/tree/master/recognition/arcface_torch) to extract identity features for loss computation. Download the pre-trained model from Arcface using this [link](https://github.com/deepinsight/insightface/tree/master/recognition/arcface_torch#ms1mv3). By default, we use the resnet50 backbone ([ms1mv3_arcface_r50_fp16](https://onedrive.live.com/?authkey=%21AFZjr283nwZHqbA&id=4A83B6B633B029CC%215583&cid=4A83B6B633B029CC)), organize the download files into the following structure:
 ```
-Deep3DFaceRecon_pytorch
+Deep3DFaceRecon_pytorch_edit
 │
 └─── checkpoints
     │
@@ -183,7 +183,7 @@ Deep3DFaceRecon_pytorch
 ```
 2. We initialize R-Net using the weights trained on [ImageNet](https://image-net.org/). Download the weights provided by PyTorch using this [link](https://download.pytorch.org/models/resnet50-0676ba61.pth), and organize the file as the following structure:
 ```
-Deep3DFaceRecon_pytorch
+Deep3DFaceRecon_pytorch_edit
 │
 └─── checkpoints
     │
@@ -193,7 +193,7 @@ Deep3DFaceRecon_pytorch
 ```
 3. We provide a landmark detector (tensorflow model) to extract 68 facial landmarks for loss computation. The detector is trained on [300WLP](http://www.cbsr.ia.ac.cn/users/xiangyuzhu/projects/3DDFA/main.htm), [LFW](http://vis-www.cs.umass.edu/lfw/), and [LS3D-W](https://www.adrianbulat.com/face-alignment) datasets. Download the trained model using this [link (google drive)](https://drive.google.com/file/d/1Jl1yy2v7lIJLTRVIpgg2wvxYITI8Dkmw/view?usp=sharing) and organize the file as follows:
 ```
-Deep3DFaceRecon_pytorch
+Deep3DFaceRecon_pytorch_edit
 │
 └─── checkpoints
     │
@@ -204,7 +204,7 @@ Deep3DFaceRecon_pytorch
 ### Data preparation
 1. To train a model with custom images，5 facial landmarks of each image are needed in advance for an image pre-alignment process. We recommend using [dlib](http://dlib.net/) or [MTCNN](https://github.com/ipazc/mtcnn) to detect these landmarks. Then, organize all files into the following structure:
 ```
-Deep3DFaceRecon_pytorch
+Deep3DFaceRecon_pytorch_edit
 │
 └─── datasets
     │
@@ -247,7 +247,7 @@ Training logs and model parameters will be saved into ./checkpoints/<custom_expe
 
 By default, the script uses a batchsize of 32 and will train the model with 20 epochs. For reference, the pre-trained model in this repo is trained with the default setting on a image collection of 300k images. A single iteration takes 0.8~0.9s on a single Tesla M40 GPU. The total training process takes around two days.
 
-To use a trained model, see [Inference](https://github.com/sicxu/Deep3DFaceRecon_pytorch#inference-with-a-pre-trained-model) section.
+To use a trained model, see [Inference](https://github.com/sicxu/Deep3DFaceRecon_pytorch_edit#inference-with-a-pre-trained-model) section.
 ## Contact
 If you have any questions, please contact the paper authors.
 

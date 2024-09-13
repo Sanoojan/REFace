@@ -1,4 +1,4 @@
-"""This script defines the custom dataset for Deep3DFaceRecon_pytorch
+"""This script defines the custom dataset for Deep3DFaceRecon_pytorch_edit
 """
 
 import os.path

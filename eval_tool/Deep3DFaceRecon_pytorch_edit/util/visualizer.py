@@ -1,4 +1,4 @@
-"""This script defines the visualizer for Deep3DFaceRecon_pytorch
+"""This script defines the visualizer for Deep3DFaceRecon_pytorch_edit
 """
 
 import numpy as np

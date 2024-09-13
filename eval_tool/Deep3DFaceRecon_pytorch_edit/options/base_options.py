@@ -1,7 +1,7 @@
-"""This script contains base options for Deep3DFaceRecon_pytorch
+"""This script contains base options for Deep3DFaceRecon_pytorch_edit
 """
 import sys
-sys.path.append('eval_tool/Deep3DFaceRecon_pytorch')
+sys.path.append('eval_tool/Deep3DFaceRecon_pytorch_edit')
 import argparse
 import os
 from util import util
@@ -30,7 +30,7 @@ class BaseOptions():
         # basic parameters
         parser.add_argument('--name', type=str, default='face_recon', help='name of the experiment. It decides where to store samples and models')
         parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
-        parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='models are saved here')
+        parser.add_argument('--checkpoints_dir', type=str, default='Other_dependencies', help='models are saved here')
         parser.add_argument('--vis_batch_nums', type=float, default=1, help='batch nums of images for visulization')
         parser.add_argument('--eval_batch_nums', type=float, default=float('inf'), help='batch nums of images for evaluation')
         parser.add_argument('--use_ddp', type=util.str2bool, nargs='?', const=True, default=True, help='whether use distributed data parallel')

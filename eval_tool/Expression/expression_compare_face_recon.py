@@ -38,9 +38,15 @@ import torch.nn.functional as F
 # import eval_tool.face_vid2vid.modules.hopenet as hopenet1
 import cv2
 from torchvision import models
-# import clip
+
+import sys
+# remove /home/sanoojan/Paint_for_swap
+sys_paths = sys.path
+sys_paths.remove('/home/sanoojan/Paint_for_swap')
+sys.path = sys_paths
+breakpoint()
 from eval_tool.Deep3DFaceRecon_pytorch_edit.options.test_options import TestOptions
-    # breakpoint()
+
 # give empty string to use the default options
 test_opt = TestOptions('')
 test_opt = test_opt.parse()

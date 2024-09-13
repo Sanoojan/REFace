@@ -1,4 +1,4 @@
-"""This script is the training script for Deep3DFaceRecon_pytorch
+"""This script is the training script for Deep3DFaceRecon_pytorch_edit
 """
 
 import os
