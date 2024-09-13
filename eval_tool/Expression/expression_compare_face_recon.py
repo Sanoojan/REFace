@@ -39,7 +39,7 @@ import torch.nn.functional as F
 import cv2
 from torchvision import models
 # import clip
-from eval_tool.Deep3DFaceRecon_pytorch.options.test_options import TestOptions
+from eval_tool.Deep3DFaceRecon_pytorch_edit.options.test_options import TestOptions
     # breakpoint()
 # give empty string to use the default options
 test_opt = TestOptions('')
@@ -86,7 +86,7 @@ parser.add_argument('--print_sim', type=bool, default=False,)
 IMAGE_EXTENSIONS = {'bmp', 'jpg', 'jpeg', 'pgm', 'png', 'ppm',
                     'tif', 'tiff', 'webp'}
 
-from eval_tool.Deep3DFaceRecon_pytorch.models import create_model
+from eval_tool.Deep3DFaceRecon_pytorch_edit.models import create_model
 
 
 def get_tensor(normalize=True, toTensor=True):

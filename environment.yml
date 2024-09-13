@@ -233,4 +233,7 @@ dependencies:
       - yapf==0.40.2
       - yarl==1.9.2
       - zipp==3.17.0
+      - -e git+https://github.com/CompVis/taming-transformers.git@master#egg=taming-transformers
+      - -e git+https://github.com/openai/CLIP.git@main#egg=clip
+      - -e .
 

@@ -40,3 +40,7 @@ niqe
 dataset/*
 
 
+**/*.mat
+eval_tool/Deep3DFaceRecon_pytorch_edit/DeepxFace/epoch_20.pth
+eval_tool/Deep3DFaceRecon_pytorch_edit/BFM/Exp_Pca.bin
+
