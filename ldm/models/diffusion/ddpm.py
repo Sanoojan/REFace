@@ -36,11 +36,11 @@ from eval_tool.lpips.lpips import LPIPS
 import wandb
 from PIL import Image
 import argparse
-# from eval_tool.Deep3DFaceRecon_pytorch.models.facerecon_model import FaceReconModel
 
 
 
-from eval_tool.Deep3DFaceRecon_pytorch.options.test_options import TestOptions
+
+from eval_tool.Deep3DFaceRecon_pytorch_edit.options.test_options import TestOptions
 
 # give empty string to use the default options
 # dmm_defaults = TestOptions('')
@@ -48,7 +48,7 @@ from eval_tool.Deep3DFaceRecon_pytorch.options.test_options import TestOptions
 # dmm_defaults=dmm_defaults.parse()
 dmm_defaults=None
 
-from eval_tool.Deep3DFaceRecon_pytorch.models import create_model
+from eval_tool.Deep3DFaceRecon_pytorch_edit.models import create_model
 
 # from ldm.modules.encoders.modules import FrozenCLIPTextEmbedder
 
