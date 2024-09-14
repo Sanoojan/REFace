@@ -28,7 +28,7 @@ conda activate REFace
 
 ## Pretrained model
 
-Download our trained model [here]().
+Download our trained model [here soon](https://huggingface.co/Sanoojan/REFace).
 
 ## Other dependencies 
 
@@ -104,7 +104,7 @@ python scripts/modify_checkpoints.py
 ```
 
 ### Training REFace
-To train a new model on Open-Images, you can use `main.py`. For example,
+To train a new model on CelebAHQ, you can use `main_swap.py`. For example,
 ```
 python -u main_swap.py \
 --logdir models/REFace/ \
@@ -145,7 +145,7 @@ This code borrows heavily from [Paint-By-Example](https://github.com/Fantasy-Stu
 
 ## Maintenance
 
-Please open a GitHub issue for any help. If you have any questions regarding the technical details, feel free to contact us.
+Please open a GitHub issue for any help. If you have any questions regarding the technical details, feel free to contact us. 
 
 ## License
 
