@@ -23,7 +23,6 @@ import socket
 from pytorch_lightning.plugins.environments import ClusterEnvironment,SLURMEnvironment
 import wandb
 
-wandb.login(key="fa0767adc156a87ed43a394680774f3116fc3ed2")
 
 def get_parser(**parser_kwargs):
     def str2bool(v):
