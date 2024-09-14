@@ -28,7 +28,7 @@ conda activate REFace
 
 ## Pretrained model
 
-Download our trained model [here soon](https://huggingface.co/Sanoojan/REFace).
+Download our trained model [here](https://huggingface.co/Sanoojan/REFace/blob/main/last.ckpt).
 
 ## Other dependencies 
 
