@@ -19,7 +19,7 @@ checkpoints/model.ckpt
 
 # Expression model (For quantitative analysis only)  Not used
 Other_dependencies/face_recon/epoch_latest.pth
-
+eval_tool/Deep3DFaceRecon_pytorch_edit/BFM/*.mat
 
 # Arcface model 
 Other_dependencies/arcface/model_ir_se50.pth
@@ -37,12 +37,11 @@ Quantitative_Grad_Other_swappers/*
 niqe
 **/*.pyc
 
-
 #data
 dataset/*
 
 
-**/*.mat
+
 
 
 

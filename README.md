@@ -13,13 +13,8 @@ This repository gives the official implementation of Realistic and Efficient Fac
 
 ## News
 - *2024-09-10* Release training code
-- *2023-09-10* Release test benchmark.
-
-## Todo
-- Upload checkpoints
-- Upload other dependencies
-- Clean code
-
+- *2024-09-10* Release test benchmark.
+- *2024-09-14* Release checkpoints and other dependencies
 
 
 ## Requirements
@@ -31,14 +26,37 @@ conda env create -f environment.yaml
 conda activate REFace
 ```
 
-## Pretrained Model
+## Pretrained model
 
-For inference purpose
+Download our trained model [here]().
+
+## Other dependencies 
+
+Download the following models from the provided links and place them in the corresponding paths to perform face swapping and quantitative evaluation.
+
+
+
+#### face parsing model (segmentation) 
+[Other_dependencies/face_parsing/79999_iter.pth](https://drive.google.com/file/d/154JgKpzCPW82qINcVieuPH3fZ2e0P812/view)
+
+#### Arcface ID retrieval model 
+[Other_dependencies/arcface/model_ir_se50.pth](https://drive.google.com/file/d/1KW7bjndL3QG3sxBbZxreGHigcCCpsDgn/view)
+
+#### Landmark detection model 
+[Other_dependencies/DLIB_landmark_det/shape_predictor_68_face_landmarks.dat](https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat)
+
+#### Expression model (For quantitative analysis only) 
+[Other_dependencies/face_recon/epoch_latest.pth]()
+[eval_tool/Deep3DFaceRecon_pytorch_edit/BFM/*.mat](https://github.com/sicxu/Deep3DFaceRecon_pytorch/tree/master/BFM)
+
+
+#### pose model (For quantitative analysis only)
+[Other_dependencies/Hopenet_pose/hopenet_robust_alpha1.pkl](https://github.com/human-analysis/RankGAN/blob/master/models/hopenet_robust_alpha1.pkl)
 
 
 ## Testing
 
-To test our model on a dataset with facial masks (), you can use `scripts/inference_test_bench.py`. For example, 
+To test our model on a dataset with facial masks (Follow dataset preparation), you can use `scripts/inference_test_bench.py`. For example, 
 ```
 CUDA_VISIBLE_DEVICES=${device} python scripts/inference_test_bench.py \
     --outdir "${Results_dir}" \
@@ -85,7 +103,7 @@ We utilize the pretrained Stable Diffusion v1-4 as initialization, please downlo
 python scripts/modify_checkpoints.py
 ```
 
-### Training Paint by Example
+### Training REFace
 To train a new model on Open-Images, you can use `main.py`. For example,
 ```
 python -u main_swap.py \
@@ -103,9 +121,8 @@ sh train.sh
 We build a test benchmark for quantitative analysis. 
 
 ## Quantitative Results
-By default, we assume that the COCOEE is downloaded and saved to the directory `test_bench`. To generate the results of test bench, you can use `scripts/inference_test_bench.py`. For example, 
+By default we assume the original dataset images, selected source images and target images  and corresponding swapped images are generated. To evaluate the face swapping in terms if FID, ID retrieval, Pose and Expression simply run:
 
-or simply run:
 ```
 bash inference_test_bench.sh
 ```
@@ -114,14 +131,11 @@ bash inference_test_bench.sh
 ## Citing Us
 
 ```
-@misc{baliah2024realisticefficientfaceswapping,
-title={Realistic and Efficient Face Swapping: A Unified Approach with Diffusion Models},
-author={Sanoojan Baliah and Qinliang Lin and Shengcai Liao and Xiaodan Liang and Muhammad Haris Khan},
-year={2024},
-eprint={2409.07269},
-archivePrefix={arXiv},
-primaryClass={cs.CV},
-url={https://arxiv.org/abs/2409.07269},
+@article{baliah2024realisticefficientfaceswapping,
+  title={Realistic and Efficient Face Swapping: A Unified Approach with Diffusion Models},
+  author={Sanoojan Baliah and Qinliang Lin and Shengcai Liao and Xiaodan Liang and Muhammad Haris Khan},
+  journal={arXiv preprint arXiv:2409.07269},
+  year={2024}
 }
 ```
 
