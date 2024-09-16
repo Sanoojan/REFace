@@ -47,6 +47,7 @@ Download the following models from the provided links and place them in the corr
 
 #### Expression model (For quantitative analysis only) 
 [Other_dependencies/face_recon/epoch_latest.pth](https://drive.google.com/file/d/1BlDBB4dLLrlN3cJhVL4nmrd_g6Jx6uP0/view?usp=drive_link)
+
 [eval_tool/Deep3DFaceRecon_pytorch_edit/BFM/*.mat](https://github.com/sicxu/Deep3DFaceRecon_pytorch/tree/master/BFM)
 
 
