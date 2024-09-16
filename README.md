@@ -55,7 +55,7 @@ Download the following models from the provided links and place them in the corr
 [Other_dependencies/Hopenet_pose/hopenet_robust_alpha1.pkl](https://github.com/human-analysis/RankGAN/blob/master/models/hopenet_robust_alpha1.pkl)
 
 
-### Alternatively, all the models can be downloaded directly from our [huggingface repo](https://huggingface.co/Sanoojan/REFace/blob/main) and replace the Other_dependencies folder, and eval_tool/Deep3DFaceRecon_pytorch_edit/BFM folder.
+### Alternatively, all the models can be downloaded directly from our [huggingface repo](https://huggingface.co/Sanoojan/REFace/tree/main) and replace the Other_dependencies folder, and eval_tool/Deep3DFaceRecon_pytorch_edit/BFM folder.
 
 ## Testing
 
