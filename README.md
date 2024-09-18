@@ -22,9 +22,11 @@ A suitable [conda](https://conda.io/) environment named `REFace` can be created
 and activated with:
 
 ```
-conda env create -f environment.yaml
+conda create -n "REFace" python=3.10.13 -y
 conda activate REFace
+sh setup.sh
 ```
+
 
 ## Pretrained model
 
@@ -132,6 +134,8 @@ bash inference_test_bench.sh
 
 
 ## Citing Us
+If you find our work valuable, we kindly ask you to consider citing our paper and starring ⭐ our repository. Our implementation includes a standard metric code and we hope it make life easier for the generation research community.
+
 
 ```
 @article{baliah2024realisticefficientfaceswapping,

@@ -4,7 +4,7 @@ name="Swap_outs"
 Results_dir="examples/FaceSwap/${name}/results"
 Base_dir="examples/FaceSwap/${name}/Outs"
 Results_out="examples/FaceSwap/${name}/results/results" 
-device=1
+device=5
 
 
 CONFIG="models/REFace/configs/project_ffhq.yaml"

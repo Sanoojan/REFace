@@ -1,9 +1,11 @@
 """This script contains base options for Deep3DFaceRecon_pytorch_edit
 """
 import sys
-sys.path.append('eval_tool/Deep3DFaceRecon_pytorch_edit')
 import argparse
 import os
+relative_path='./eval_tool/Deep3DFaceRecon_pytorch_edit'
+sys.path.append(os.path.abspath(relative_path))
+
 from util import util
 import numpy as np
 import torch

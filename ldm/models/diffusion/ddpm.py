@@ -40,16 +40,6 @@ import argparse
 
 
 
-from eval_tool.Deep3DFaceRecon_pytorch_edit.options.test_options import TestOptions
-
-# give empty string to use the default options
-# dmm_defaults = TestOptions('')
-
-# dmm_defaults=dmm_defaults.parse()
-dmm_defaults=None
-
-from eval_tool.Deep3DFaceRecon_pytorch_edit.models import create_model
-
 # from ldm.modules.encoders.modules import FrozenCLIPTextEmbedder
 
 
@@ -96,15 +86,7 @@ def save_clip_img(img, path,clip=True):
     # else:  
     #     img=TF.normalize(img, mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
 
-# class FaceRecon(nn.module):
-#     def __init__(self,opts=None):
-#         super(FaceRecon, self).__init__()
-#         # self.opts = opts
-#         # self.model = create_model(opts)
-#         # self.model.setup(opts)
-#         # self.model.eval()
-#         # self.set_requires_grad(False)
-#         self.model=FaceReconModel()
+
 
 class IDLoss(nn.Module):
     def __init__(self,opts,multiscale=False):
@@ -754,16 +736,7 @@ class LatentDiffusion(DDPM):
             self.proj_out=nn.Identity()
         
         
-                
-        if self.use_3dmm:
-            self.models_3dmm = create_model(dmm_defaults)
-            self.models_3dmm.setup(dmm_defaults)
-            
-            if torch.cuda.is_available():
-                self.models_3dmm.net_recon.cuda()
-            #     self.models_3dmm.facemodel.to("cuda")
-            self.models_3dmm.eval() 
-            self.dmm_proj_out=nn.Linear(257, 768)
+   
         try:
             self.num_downs = len(first_stage_config.params.ddconfig.ch_mult) - 1
         except:
