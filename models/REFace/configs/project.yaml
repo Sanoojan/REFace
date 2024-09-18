@@ -1,0 +1,224 @@
+model:
+  base_learning_rate: 1.0e-05
+  target: ldm.models.diffusion.ddpm.LatentDiffusion
+  params:
+    linear_start: 0.00085
+    linear_end: 0.012
+    num_timesteps_cond: 1
+    log_every_t: 200
+    timesteps: 1000
+    first_stage_key: inpaint
+    cond_stage_key: image
+    image_size: 64
+    channels: 4
+    cond_stage_trainable: true
+    conditioning_key: crossattn
+    monitor: val/loss_simple_ema
+    u_cond_percent: 0.2
+    scale_factor: 0.18215
+    use_ema: false
+    scheduler_config:
+      target: ldm.lr_scheduler.LambdaLinearScheduler
+      params:
+        warm_up_steps:
+        - 10000
+        cycle_lengths:
+        - 10000000000000
+        f_start:
+        - 1.0e-06
+        f_max:
+        - 1.0
+        f_min:
+        - 1.0
+    unet_config:
+      target: ldm.modules.diffusionmodules.openaimodel.UNetModel
+      params:
+        image_size: 32
+        in_channels: 9
+        out_channels: 4
+        model_channels: 320
+        attention_resolutions:
+        - 4
+        - 2
+        - 1
+        num_res_blocks: 2
+        channel_mult:
+        - 1
+        - 2
+        - 4
+        - 4
+        num_heads: 8
+        use_spatial_transformer: true
+        transformer_depth: 1
+        context_dim: 768
+        use_checkpoint: true
+        legacy: false
+        add_conv_in_front_of_unet: false
+    first_stage_config:
+      target: ldm.models.autoencoder.AutoencoderKL
+      params:
+        embed_dim: 4
+        monitor: val/rec_loss
+        ddconfig:
+          double_z: true
+          z_channels: 4
+          resolution: 256
+          in_channels: 3
+          out_ch: 3
+          ch: 128
+          ch_mult:
+          - 1
+          - 2
+          - 4
+          - 4
+          num_res_blocks: 2
+          attn_resolutions: []
+          dropout: 0.0
+        lossconfig:
+          target: torch.nn.Identity
+    cond_stage_config:
+      target: ldm.modules.encoders.modules.FrozenCLIPEmbedder
+      other_params:
+        clip_weight: 1.0
+        ID_weight: 10.0
+        Landmark_cond: true
+        Landmarks_weight: 0.05
+        arcface_path: Other_dependencies/arcface/model_ir_se50.pth
+        concat_feat: false
+        land_mark_id_seperate_layers: false
+        multi_scale_ID: false
+        sep_head_att: false
+        Additional_config:
+          Reconstruct_initial: true
+          Target_CLIP_feat: true
+          Source_CLIP_feat: true
+          Multiple_ID_losses: true
+          Reconstruct_DDIM_steps: 4
+          ID_loss_weight: 0.3
+          LPIPS_loss_weight: 0.1
+          Landmark_loss_weight: 0
+data:
+  target: main_swap.DataModuleFromConfig
+  params:
+    batch_size: 1
+    wrap: false
+    train:
+      target: ldm.data.celebA.CelebAdataset
+      params:
+        state: train
+        dataset_dir: dataset/FaceData/CelebAMask-HQ/
+        arbitrary_mask_percent: 0.5
+        image_size: 512
+        data_seed: 0
+        gray_outer_mask: true
+        remove_mask_tar:
+        - 1
+        - 2
+        - 4
+        - 5
+        - 8
+        - 9
+        - 6
+        - 7
+        - 10
+        - 11
+        - 12
+        - 17
+        preserve_mask_src:
+        - 1
+        - 2
+        - 4
+        - 5
+        - 8
+        - 9
+        - 6
+        - 7
+        - 10
+        - 11
+        - 12
+        - 17
+    validation:
+      target: ldm.data.celebA.CelebAdataset
+      params:
+        state: validation
+        dataset_dir: dataset/FaceData/CelebAMask-HQ/
+        arbitrary_mask_percent: 0.5
+        image_size: 512
+        data_seed: 0
+        gray_outer_mask: true
+        remove_mask_tar:
+        - 1
+        - 2
+        - 4
+        - 5
+        - 8
+        - 9
+        - 6
+        - 7
+        - 10
+        - 11
+        - 12
+        - 17
+        preserve_mask_src:
+        - 1
+        - 2
+        - 4
+        - 5
+        - 8
+        - 9
+        - 6
+        - 7
+        - 10
+        - 11
+        - 12
+        - 17
+    test:
+      target: ldm.data.celebA.CelebAdataset
+      params:
+        state: test
+        dataset_dir: dataset/FaceData/CelebAMask-HQ/
+        arbitrary_mask_percent: 0.5
+        image_size: 512
+        gray_outer_mask: true
+        remove_mask_tar:
+        - 1
+        - 2
+        - 4
+        - 5
+        - 8
+        - 9
+        - 6
+        - 7
+        - 10
+        - 11
+        - 12
+        - 17
+        preserve_mask_src:
+        - 1
+        - 2
+        - 4
+        - 5
+        - 8
+        - 9
+        - 6
+        - 7
+        - 10
+        - 11
+        - 12
+        - 17
+        remove_mask_tar_FFHQ:
+        - 1
+        - 2
+        - 3
+        - 5
+        - 6
+        - 7
+        - 9
+        preserve_mask_src_FFHQ:
+        - 1
+        - 2
+        - 3
+        - 5
+        - 6
+        - 7
+        - 9

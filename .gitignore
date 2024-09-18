@@ -1,7 +1,7 @@
 
 
 #Our models
-models/*  
+models/REFace/checkpoints
 
 #Example image outputs
 examples/FaceSwap/Swap_outs/*
