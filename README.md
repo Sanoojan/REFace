@@ -59,6 +59,20 @@ Download the following models from the provided links and place them in the corr
 
 ### Alternatively, all the models can be downloaded directly from our [huggingface repo](https://huggingface.co/Sanoojan/REFace/tree/main) and replace the Other_dependencies folder, and eval_tool/Deep3DFaceRecon_pytorch_edit/BFM folder.
 
+
+## Demo
+
+To try our face-swapping inference on individual images using a graphical user interface, follow these steps:
+
+```
+sh Demo.sh
+```
+After launching, a link will be generated in the terminal. Open this link in your browser to access the GUI interface.
+Use the interface to upload your source and target images. Simply select the images and click “Submit.”
+Once processed, the output image will appear alongside the input images in the GUI.
+Enjoy testing the Realistic and Efficient Face-Swapping (REFace) demo!
+
+
 ## Testing
 
 To test our model on a dataset with facial masks (Follow dataset preparation), you can use `scripts/inference_test_bench.py`. For example, 

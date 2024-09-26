@@ -43,7 +43,9 @@ from torchvision.transforms import PILToTensor
 from pretrained.face_parsing.face_parsing_demo import init_faceParsing_pretrained_model, faceParsing_demo, vis_parsing_maps
 # from dift.src.models.dift_sd import SDFeaturizer
 # from dift.src.utils.visualization import Demo
-
+from flask import Flask, request, jsonify, send_file, render_template
+import io
+import base64
 
 # import matplotlib.pyplot as plt
 import torch.nn as nn
@@ -55,6 +57,7 @@ import numpy as np
 safety_model_id = "CompVis/stable-diffusion-safety-checker"
 safety_feature_extractor = AutoFeatureExtractor.from_pretrained(safety_model_id)
 safety_checker = StableDiffusionSafetyChecker.from_pretrained(safety_model_id)
+
 
 #set cuda device 
 # os.environ["CUDA_VISIBLE_DEVICES"] = "1"
@@ -180,249 +183,295 @@ def check_safety(x_image):
     return x_checked_image, has_nsfw_concept
 
 
-def main():
-    parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "--prompt",
-        type=str,
-        nargs="?",
-        default="a photograph of an astronaut riding a horse",
-        help="the prompt to render"
-    )
-    parser.add_argument(
-        "--outdir",
-        type=str,
-        nargs="?",
-        help="dir to write results to",
-        default="results_video/debug"
-    )
-    parser.add_argument(
-        "--Base_dir",
-        type=str,
-        nargs="?",
-        help="dir to write cropped_images",
-        default="results_video"
-    )
-    parser.add_argument(
-        "--skip_grid",
-        action='store_true',
-        help="do not save a grid, only individual samples. Helpful when evaluating lots of samples",
-    )
-    parser.add_argument(
-        "--skip_save",
-        action='store_true',
-        help="do not save individual samples. For speed measurements.",
-    )
-    parser.add_argument(
-        "--ddim_steps",
-        type=int,
-        default=50,
-        help="number of ddim sampling steps",
-    )
-    parser.add_argument(
-        "--plms",
-        action='store_true',
-        help="use plms sampling",
-    )
-    parser.add_argument(
-        "--laion400m",
-        action='store_true',
-        help="uses the LAION400M model",
-    )
-    parser.add_argument(
-        "--fixed_code",
-        action='store_true',
-        help="if enabled, uses the same starting code across samples ",
-        default=False
-    )
-    parser.add_argument(
-        "--Start_from_target",
-        action='store_true',
-        help="if enabled, uses the noised target image as the starting ",
-    )
-    parser.add_argument(
-        "--only_target_crop",
-        action='store_true',
-        help="if enabled, uses the noised target image as the starting ",
-        default=True
-    )
-    parser.add_argument(
-        "--target_start_noise_t",
-        type=int,
-        default=1000,
-        help="target_start_noise_t",
-    )
-    parser.add_argument(
-        "--ddim_eta",
-        type=float,
-        default=0.0,
-        help="ddim eta (eta=0.0 corresponds to deterministic sampling",
-    )
-    parser.add_argument(
-        "--n_iter",
-        type=int,
-        default=2,
-        help="sample this often",
-    )
-    parser.add_argument(
-        "--H",
-        type=int,
-        default=512,
-        help="image height, in pixel space",
-    )
-    parser.add_argument(
-        "--W",
-        type=int,
-        default=512,
-        help="image width, in pixel space",
-    )
-    parser.add_argument(
-        "--C",
-        type=int,
-        default=4,
-        help="latent channels",
-    )
-    parser.add_argument(
-        "--f",
-        type=int,
-        default=8,
-        help="downsampling factor",
-    )
-    parser.add_argument(
-        "--n_samples",
-        type=int,
-        default=12,
-        help="how many samples to produce for each given prompt. A.k.a. batch size",
-    )
-    parser.add_argument(
-        "--n_rows",
-        type=int,
-        default=0,
-        help="rows in the grid (default: n_samples)",
-    )
-    parser.add_argument(
-        "--scale",
-        type=float,
-        default=5,
-        help="unconditional guidance scale: eps = eps(x, empty) + scale * (eps(x, cond) - eps(x, empty))",
-    )
-    parser.add_argument(
-        "--target_folder",
-        type=str,
-        help="target_video",
-        default="examples/faceswap/Andy2.mp4",
-    )
-    parser.add_argument(
-        "--src_folder",
-        type=str,
-        help="src_image",
-        default="examples/faceswap/source.jpg"
-    )
-    parser.add_argument(
-        "--src_image_mask",
-        type=str,
-        help="src_image_mask",
-    )
-    parser.add_argument(
-        "--from-file",
-        type=str,
-        help="if specified, load prompts from this file",
-    )
-    parser.add_argument(
-        "--config",
-        type=str,
-        default="configs/debug.yaml",
-        help="path to config which constructs model",
-    )
-    parser.add_argument(
-        "--ckpt",
-        type=str,
-        default="models/REFace/checkpoints/last.ckpt",
-        help="path to checkpoint of model",
-    )
-    parser.add_argument(
-        "--seed",
-        type=int,
-        default=42,
-        help="the seed (for reproducible sampling)",
-    )
-    parser.add_argument(
-        "--rank",
-        type=int,
-        default=0,
-        help="the seed (for reproducible sampling)",
-    )
-    parser.add_argument(
-        "--precision",
-        type=str,
-        help="evaluate at this precision",
-        choices=["full", "autocast"],
-        default="autocast"
-    )
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument(
+    "--prompt",
+    type=str,
+    nargs="?",
+    default="a photograph of an astronaut riding a horse",
+    help="the prompt to render"
+)
+parser.add_argument(
+    "--outdir",
+    type=str,
+    nargs="?",
+    help="dir to write results to",
+    default="results_video/debug"
+)
+parser.add_argument(
+    "--Base_dir",
+    type=str,
+    nargs="?",
+    help="dir to write cropped_images",
+    default="results_video"
+)
+parser.add_argument(
+    "--skip_grid",
+    action='store_true',
+    help="do not save a grid, only individual samples. Helpful when evaluating lots of samples",
+)
+parser.add_argument(
+    "--skip_save",
+    action='store_true',
+    help="do not save individual samples. For speed measurements.",
+)
+parser.add_argument(
+    "--ddim_steps",
+    type=int,
+    default=50,
+    help="number of ddim sampling steps",
+)
+parser.add_argument(
+    "--plms",
+    action='store_true',
+    help="use plms sampling",
+)
+parser.add_argument(
+    "--laion400m",
+    action='store_true',
+    help="uses the LAION400M model",
+)
+parser.add_argument(
+    "--fixed_code",
+    action='store_true',
+    help="if enabled, uses the same starting code across samples ",
+    default=False
+)
+parser.add_argument(
+    "--Start_from_target",
+    action='store_true',
+    help="if enabled, uses the noised target image as the starting ",
+)
+parser.add_argument(
+    "--only_target_crop",
+    action='store_true',
+    help="if enabled, uses the noised target image as the starting ",
+    default=True
+)
+parser.add_argument(
+    "--target_start_noise_t",
+    type=int,
+    default=1000,
+    help="target_start_noise_t",
+)
+parser.add_argument(
+    "--ddim_eta",
+    type=float,
+    default=0.0,
+    help="ddim eta (eta=0.0 corresponds to deterministic sampling",
+)
+parser.add_argument(
+    "--n_iter",
+    type=int,
+    default=2,
+    help="sample this often",
+)
+parser.add_argument(
+    "--H",
+    type=int,
+    default=512,
+    help="image height, in pixel space",
+)
+parser.add_argument(
+    "--W",
+    type=int,
+    default=512,
+    help="image width, in pixel space",
+)
+parser.add_argument(
+    "--C",
+    type=int,
+    default=4,
+    help="latent channels",
+)
+parser.add_argument(
+    "--f",
+    type=int,
+    default=8,
+    help="downsampling factor",
+)
+parser.add_argument(
+    "--n_samples",
+    type=int,
+    default=12,
+    help="how many samples to produce for each given prompt. A.k.a. batch size",
+)
+parser.add_argument(
+    "--n_rows",
+    type=int,
+    default=0,
+    help="rows in the grid (default: n_samples)",
+)
+parser.add_argument(
+    "--scale",
+    type=float,
+    default=5,
+    help="unconditional guidance scale: eps = eps(x, empty) + scale * (eps(x, cond) - eps(x, empty))",
+)
+parser.add_argument(
+    "--target_folder",
+    type=str,
+    help="target_video",
+    default="examples/faceswap/Andy2.mp4",
+)
+parser.add_argument(
+    "--src_folder",
+    type=str,
+    help="src_image",
+    default="examples/faceswap/source.jpg"
+)
+parser.add_argument(
+    "--src_image_mask",
+    type=str,
+    help="src_image_mask",
+)
+parser.add_argument(
+    "--from-file",
+    type=str,
+    help="if specified, load prompts from this file",
+)
+parser.add_argument(
+    "--config",
+    type=str,
+    default="configs/debug.yaml",
+    help="path to config which constructs model",
+)
+parser.add_argument(
+    "--ckpt",
+    type=str,
+    default="models/REFace/checkpoints/last.ckpt",
+    help="path to checkpoint of model",
+)
+parser.add_argument(
+    "--seed",
+    type=int,
+    default=42,
+    help="the seed (for reproducible sampling)",
+)
+parser.add_argument(
+    "--rank",
+    type=int,
+    default=0,
+    help="the seed (for reproducible sampling)",
+)
+parser.add_argument(
+    "--precision",
+    type=str,
+    help="evaluate at this precision",
+    choices=["full", "autocast"],
+    default="autocast"
+)
+
+parser.add_argument('--faceParser_name', default='default', type=str, help='face parser name, [ default | segnext] is currently supported.')
+parser.add_argument('--faceParsing_ckpt', type=str, default="Other_dependencies/face_parsing/79999_iter.pth")  
+parser.add_argument('--segnext_config', default='', type=str, help='Path to pre-trained SegNeXt faceParser configuration file, '
+                                                                    'this option is valid when --faceParsing_ckpt=segenext')
+        
+parser.add_argument('--save_vis', action='store_true')
+parser.add_argument('--seg12',default=True, action='store_true')
+
+opt = parser.parse_args()
+print(opt)
+if opt.laion400m:
+    print("Falling back to LAION 400M model...")
+    opt.config = "configs/latent-diffusion/txt2img-1p4B-eval.yaml"
+    opt.ckpt = "models/ldm/text2img-large/model.ckpt"
+    opt.outdir = "outputs/txt2img-samples-laion400m"
+
+seed_everything(opt.seed)
+
+config = OmegaConf.load(f"{opt.config}")
+model = load_model_from_config(config, f"{opt.ckpt}")
+
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+
+model = model.to(device)
+
+if opt.plms:
+    sampler = PLMSSampler(model)
+else:
+    sampler = DDIMSampler(model)
+
+
+os.makedirs(opt.outdir, exist_ok=True)
+outpath = opt.outdir
+Base_path=opt.Base_dir
+
+batch_size = opt.n_samples
+n_rows = opt.n_rows if opt.n_rows > 0 else batch_size
+if not opt.from_file:
+    prompt = opt.prompt
+    assert prompt is not None
+    data = [batch_size * [prompt]]
+
+else:
+    print(f"reading prompts from {opt.from_file}")
+    with open(opt.from_file, "r") as f:
+        data = f.read().splitlines()
+        data = list(chunk(data, batch_size))
+
+# sample_path = os.path.join(outpath, "samples")
+result_path = os.path.join(outpath, "results")
+model_out_path = os.path.join(outpath, "model_outputs")
+
+
+
+target_path=opt.target_folder
+target_cropped_path=os.path.join(Base_path, "target_cropped")
+target_mask_path=os.path.join(Base_path,"mask_frames")
+source_cropped_path=os.path.join(Base_path, "source_cropped")
+source_mask_path=os.path.join(Base_path, "source_mask")
+
+# os.makedirs(sample_path, exist_ok=True)
+os.makedirs(result_path, exist_ok=True)
+os.makedirs(target_cropped_path, exist_ok=True)
+os.makedirs(target_mask_path, exist_ok=True)
+os.makedirs(model_out_path, exist_ok=True)
+os.makedirs(source_cropped_path, exist_ok=True)
+os.makedirs(source_mask_path, exist_ok=True)
+
+
+
+temp_results_dir = os.path.join(Base_path, 'temp_results')
+os.makedirs(temp_results_dir, exist_ok=True)
+
+faceParsing_model = init_faceParsing_pretrained_model(opt.faceParser_name, opt.faceParsing_ckpt, opt.segnext_config)
+
+app = Flask(__name__)
+
+
+
+def process_images(image1, image2):
+    # Open images
+    Source = Image.open(image1)
+    Target = Image.open(image2)
     
-    parser.add_argument('--faceParser_name', default='default', type=str, help='face parser name, [ default | segnext] is currently supported.')
-    parser.add_argument('--faceParsing_ckpt', type=str, default="Other_dependencies/face_parsing/79999_iter.pth")  
-    parser.add_argument('--segnext_config', default='', type=str, help='Path to pre-trained SegNeXt faceParser configuration file, '
-                                                                        'this option is valid when --faceParsing_ckpt=segenext')
-            
-    parser.add_argument('--save_vis', action='store_true')
-    parser.add_argument('--seg12',default=True, action='store_true')
+    # Save source and target images to disk for further processing
     
-    opt = parser.parse_args()
-    print(opt)
-    # breakpoint()
-    if opt.laion400m:
-        print("Falling back to LAION 400M model...")
-        opt.config = "configs/latent-diffusion/txt2img-1p4B-eval.yaml"
-        opt.ckpt = "models/ldm/text2img-large/model.ckpt"
-        opt.outdir = "outputs/txt2img-samples-laion400m"
-
-    seed_everything(opt.seed)
-
-    config = OmegaConf.load(f"{opt.config}")
-    model = load_model_from_config(config, f"{opt.ckpt}")
-
-    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    os.makedirs('examples/FaceSwap/One_source', exist_ok=True)
+    os.makedirs('examples/FaceSwap/One_target', exist_ok=True)
     
-    model = model.to(device)
-
-    if opt.plms:
-        sampler = PLMSSampler(model)
-    else:
-        sampler = DDIMSampler(model)
-
-
-    os.makedirs(opt.outdir, exist_ok=True)
-    outpath = opt.outdir
-    Base_path=opt.Base_dir
-
-    batch_size = opt.n_samples
-    n_rows = opt.n_rows if opt.n_rows > 0 else batch_size
-    if not opt.from_file:
-        prompt = opt.prompt
-        assert prompt is not None
-        data = [batch_size * [prompt]]
-
-    else:
-        print(f"reading prompts from {opt.from_file}")
-        with open(opt.from_file, "r") as f:
-            data = f.read().splitlines()
-            data = list(chunk(data, batch_size))
-
-    # sample_path = os.path.join(outpath, "samples")
-    result_path = os.path.join(outpath, "results")
-    model_out_path = os.path.join(outpath, "model_outputs")
+    # remove alpha channel
+    Source = Source.convert('RGB')
+    Target = Target.convert('RGB')
     
+    Source.save('examples/FaceSwap/One_source/source.jpg')
+    Target.save('examples/FaceSwap/One_target/target.jpg')
     
+    # Run inference (custom function for face swapping)
+    run_inference()
     
-    target_path=opt.target_folder
-    target_cropped_path=os.path.join(Base_path, "target_cropped")
-    target_mask_path=os.path.join(Base_path,"mask_frames")
-    source_cropped_path=os.path.join(Base_path, "source_cropped")
-    source_mask_path=os.path.join(Base_path, "source_mask")
+    # Load the output image from the results
+    new_image = Image.open('examples/FaceSwap/One_output/results/results/0/000000000000.png')
     
-    # os.makedirs(sample_path, exist_ok=True)
+    # Clean up the output directories after processing
+    os.system('rm -rf examples/FaceSwap/One_output/*')
+    os.system('rm -rf examples/FaceSwap/One_source/*')
+    os.system('rm -rf examples/FaceSwap/One_target/*')
+    
     os.makedirs(result_path, exist_ok=True)
     os.makedirs(target_cropped_path, exist_ok=True)
     os.makedirs(target_mask_path, exist_ok=True)
@@ -430,29 +479,45 @@ def main():
     os.makedirs(source_cropped_path, exist_ok=True)
     os.makedirs(source_mask_path, exist_ok=True)
     
-    
+    # Save processed output image to a bytes buffer
+    img_io = io.BytesIO()
+    new_image.save(img_io, 'JPEG')
+    img_io.seek(0)
 
-    temp_results_dir = os.path.join(Base_path, 'temp_results')
-    os.makedirs(temp_results_dir, exist_ok=True)
-    
-    faceParsing_model = init_faceParsing_pretrained_model(opt.faceParser_name, opt.faceParsing_ckpt, opt.segnext_config)
-    
-    
-    
-    
-    # src_image=cv2.imread(opt.src_image)
-    
-    # base_count = len(os.listdir(sample_path))
-    # grid_count = len(os.listdir(outpath)) - 1
-    
-    # get count of mask_frames_path
-    # base_count = len(os.listdir(target_frames_path))
-    # mask_count= len(os.listdir(mask_frames_path))
-    
-    
-    # inv_transforms_all = []
-    # for images in target_path
-    
+    return img_io
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/process_images', methods=['POST'])
+def process_images_endpoint():
+    image1 = request.files['image1']
+    image2 = request.files['image2']
+
+    # Read the images and reset the file pointer to the beginning
+    image1_data = image1.read()
+    image2_data = image2.read()
+    image1.seek(0)  # Reset file pointer for further processing
+    image2.seek(0)  # Reset file pointer for further processing
+
+    # Convert input images to base64 strings before processing
+    input_image1 = base64.b64encode(image1_data).decode('utf-8')
+    input_image2 = base64.b64encode(image2_data).decode('utf-8')
+
+    # Process images
+    output_image_io = process_images(image1, image2)
+    output_image = base64.b64encode(output_image_io.getvalue()).decode('utf-8')
+
+    # Return input and output images in base64 format
+    return jsonify({
+        'input_image1': f"data:image/jpeg;base64,{input_image1}",
+        'input_image2': f"data:image/jpeg;base64,{input_image2}",
+        'output_image': f"data:image/jpeg;base64,{output_image}"
+    })
+
+
+def run_inference():
     reset_cnt=0
     for i,im in enumerate(os.listdir(target_path)):
         im_name=os.path.basename(im)
@@ -483,7 +548,7 @@ def main():
 
         try:
             
-            crops, orig_images, quads, inv_transforms = crop_and_align_face([os.path.join(opt.src_folder, im)])
+            crops, orig_images, quads, inv_transforms_src = crop_and_align_face([os.path.join(opt.src_folder, im)])
             crops = [crop.convert("RGB") for crop in crops]
             T = crops[0]
             # inv_transforms_all.append(inv_transforms[0])
@@ -498,19 +563,8 @@ def main():
             # if error do not skip i
             reset_cnt+=1
             pass
-   
-    
-    # crops, orig_images, quads, inv_transforms = crop_and_align_face([opt.src_image])
-    # crops = [crop.convert("RGB") for crop in crops]
-    # T = crops[0]
-    # src_image_new=os.path.join(temp_results_dir, src_name+'.png')
-    # T.save(src_image_new)
-    # pil_im = Image.open(src_image_new).convert("RGB").resize((1024,1024), Image.BILINEAR)
-    # mask = faceParsing_demo(faceParsing_model, pil_im, convert_to_seg12=opt.seg12, model_name=opt.faceParser_name)
-    # Image.fromarray(mask).save(os.path.join(temp_results_dir, os.path.basename(opt.src_image)))
-    
-    del faceParsing_model
-    
+
+
     conf_file=OmegaConf.load(opt.config)
     ################### Get reference
     for i,im in enumerate(os.listdir(source_cropped_path)):
@@ -535,7 +589,7 @@ def main():
         ref_mask_img = np.array(ref_mask_img)  # Convert the label to a NumPy array if it's not already
 
         # Create a mask to preserve values in the 'preserve' list
-  
+
         preserve=conf_file.data.params.test.params['preserve_mask_src_FFHQ']
         print(preserve)
         ref_mask= np.isin(ref_mask_img, preserve)
@@ -554,23 +608,7 @@ def main():
         ref_image_tensor = ref_img.to(device,non_blocking=True).to(torch.float16).unsqueeze(0)
         
         
-        # ref_mask_img=Image.fromarray(ref_img).convert('L')
-        # ref_mask_img_r = ref_converted_mask.resize(img_p_np.shape[1::-1], Image.NEAREST)
-        # ref_mask_img_r = np.array(ref_mask_img_r)
-        # ref_img[ref_mask_img_r==0]=0
-        
-        # ref_img=trans(image=ref_img)
-        # ref_img=Image.fromarray(ref_img["image"])
-        # ref_img=get_tensor_clip()(ref_img)
-        
-        # ref_image_tensor = ref_img.to(device,non_blocking=True).to(torch.float16).unsqueeze(0)
-        ########################
-        
 
-        # test_dataset=COCOImageDataset(test_bench_dir='test_bench') 
-        #read config file :configs/v2.yaml
-        
-        # breakpoint()
         test_args=conf_file.data.params.test.params
         
         
@@ -595,12 +633,12 @@ def main():
             # extend the start code to batch size
             start_code = start_code.unsqueeze(0).repeat(batch_size, 1, 1, 1)
 
-    
+
         start_code = None
         if opt.fixed_code:
             start_code = torch.randn([opt.n_samples, opt.C, opt.H // opt.f, opt.W // opt.f], device=device)
 
-    
+
         use_prior=True
         
         precision_scope = autocast if opt.precision=="autocast" else nullcontext
@@ -738,23 +776,23 @@ def main():
 
 
                                 x_sample = 255. * rearrange(x_sample.cpu().numpy(), 'c h w -> h w c')
-                                img = Image.fromarray(x_sample.astype(np.uint8))
-                                img.save(os.path.join(result_img_path, segment_id_batch[i]+".png"))
+                                img = Image.fromarray(x_sample.astype(np.uint8)).resize((1024,1024), Image.BILINEAR)
                                 
-                                mask_save=255.*rearrange(un_norm(inpaint_mask[i]).cpu(), 'c h w -> h w c').numpy()
-                                mask_save= cv2.cvtColor(mask_save,cv2.COLOR_GRAY2RGB)
-                                mask_save = Image.fromarray(mask_save.astype(np.uint8))
-                                mask_save.save(os.path.join(sample_path, segment_id_batch[i]+"_mask.png"))
-                                GT_img=255.*rearrange(all_img[0], 'c h w -> h w c').numpy()
-                                GT_img = Image.fromarray(GT_img.astype(np.uint8))
-                                GT_img.save(os.path.join(sample_path, segment_id_batch[i]+"_GT.png"))
-                                inpaint_img=255.*rearrange(all_img[1], 'c h w -> h w c').numpy()
-                                inpaint_img = Image.fromarray(inpaint_img.astype(np.uint8))
-                                inpaint_img.save(os.path.join(sample_path, segment_id_batch[i]+"_inpaint.png"))
-                                ref_img=255.*rearrange(all_img[2], 'c h w -> h w c').numpy()
-                                ref_img = Image.fromarray(ref_img.astype(np.uint8))
-                                ref_img.save(os.path.join(sample_path, segment_id_batch[i]+"_ref.png"))
-                                # base_count += 1
+                                
+                                
+                                orig_image=Image.open("examples/FaceSwap/One_target/target.jpg")            
+                                inv_trans_coeffs = inv_transforms[0]
+                                swapped_and_pasted = img.convert('RGBA')
+                                pasted_image = orig_image.convert('RGBA')
+                                swapped_and_pasted.putalpha(255)
+                                # breakpoint()
+                                projected = swapped_and_pasted.transform(orig_image.size, Image.PERSPECTIVE, inv_trans_coeffs, Image.BILINEAR)
+                                pasted_image.alpha_composite(projected)
+                                #remove alpha channel
+                                pasted_image = pasted_image.convert('RGB')
+                            
+                            # save pasted image
+                                pasted_image.save(os.path.join(result_img_path, segment_id_batch[i]+".png"))
 
 
 
@@ -769,5 +807,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=False, host='0.0.0.0')
+
 

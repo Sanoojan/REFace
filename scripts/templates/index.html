@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing GUI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin: 10px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .custom-file-input {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .file-label:hover {
+            background-color: #0056b3;
+        }
+
+        .file-name {
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #output {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #outputImages {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .image-container {
+            text-align: center;
+        }
+
+        img {
+            margin: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Loading Spinner Styles */
+        #loading {
+            display: none; /* Hide spinner by default */
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            #outputImages {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            img {
+                width: 100%;
+            }
+        }
+
+        /* Smooth scroll back to top after processing */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to REFace Demo</h1>
+    <h2>Realistic and Efficient Face Swapping: A Unified Approach with Diffusion Models (WACV 2025)</h2>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="image1" class="file-label">Upload Source Image</label>
+        <input type="file" id="image1" class="custom-file-input" name="Source Image" accept="image/*" required>
+        <span id="sourceFileName" class="file-name"></span>
+        
+        <label for="image2" class="file-label">Upload Target Image</label>
+        <input type="file" id="image2" class="custom-file-input" name="Source Image" accept="image/*" required>
+        <span id="targetFileName" class="file-name"></span>
+        
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="output">
+        <h2>Images</h2>
+        <div id="outputImages">
+            <div class="image-container">
+                <label for="inputImage1">Source Image</label>
+                <img id="inputImage1" src="" alt="Source Image" width="300">
+            </div>
+            <div class="image-container">
+                <label for="inputImage2">Target Image</label>
+                <img id="inputImage2" src="" alt="Target Image" width="300">
+            </div>
+            <div class="image-container">
+                <label for="outputImage">Swapped Image</label>
+                <img id="outputImage" src="" alt="Output Image" width="300">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('image1').addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : '';
+            document.getElementById('sourceFileName').textContent = fileName;
+        });
+
+        document.getElementById('image2').addEventListener('change', function() {
+            const fileName = this.files[0] ? this.files[0].name : '';
+            document.getElementById('targetFileName').textContent = fileName;
+        });
+
+        document.getElementById('uploadForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            formData.append('image1', document.getElementById('image1').files[0]);
+            formData.append('image2', document.getElementById('image2').files[0]);
+
+            // Show loading spinner
+            document.getElementById('loading').style.display = 'block';
+
+            const response = await fetch('/process_images', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+
+            document.getElementById('inputImage1').src = result.input_image1;
+            document.getElementById('inputImage2').src = result.input_image2;
+            document.getElementById('outputImage').src = result.output_image;
+
+            // Hide loading spinner
+            document.getElementById('loading').style.display = 'none';
+
+            // Scroll back to the top after processing to see the title
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+    </script>
+</body>
+</html>
