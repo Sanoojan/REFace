@@ -152,9 +152,9 @@ If you find our work valuable, we kindly ask you to consider citing our paper an
 
 
 ```
-@article{baliah2024realisticefficientfaceswapping,
+@article{baliah2024realistic,
   title={Realistic and Efficient Face Swapping: A Unified Approach with Diffusion Models},
-  author={Sanoojan Baliah and Qinliang Lin and Shengcai Liao and Xiaodan Liang and Muhammad Haris Khan},
+  author={Baliah, Sanoojan and Lin, Qinliang and Liao, Shengcai and Liang, Xiaodan and Khan, Muhammad Haris},
   journal={arXiv preprint arXiv:2409.07269},
   year={2024}
 }
