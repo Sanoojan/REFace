@@ -144,7 +144,7 @@ We build a test benchmark for quantitative analysis.
 To prepare FFHQ masks, run
 
 ```
-python scripts/esitmate_FFHQ_mask.py --seg12
+python esitmate_FFHQ_mask.py --seg12
 ```
 
 To get the face swapping outcomes on CelebA and FFHQ datasets run,
