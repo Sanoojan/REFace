@@ -433,8 +433,7 @@ class FFHQdataset(data.Dataset):
             self.ref_imgs= self.ref_imgs[:int(len(self.imgs)*self.fraction)]
             self.ref_labels= self.ref_labels[:int(len(self.labels)*self.fraction)]
 
-            # if self.load_prior:
-            #     self.prior_images=sorted([osp.join("intermediate_results_FFHQ_261/results", "0000000%d.jpg"%idx) for idx in range(68000, 69000)])
+            
             
         self.imgs= self.imgs[:int(len(self.imgs)*self.fraction)]
         self.labels= self.labels[:int(len(self.labels)*self.fraction)]

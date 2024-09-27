@@ -135,7 +135,7 @@ class CelebAdataset(data.Dataset):
         self.load_vis_img=load_vis_img
         self.state=state
         self.args=args
-        self.load_prior=True
+        self.load_prior=False
         self.kernel = np.ones((1, 1), np.uint8)
         self.random_trans=A.Compose([
             A.Resize(height=224,width=224),
@@ -171,10 +171,10 @@ class CelebAdataset(data.Dataset):
             self.labels =  sorted([osp.join(args['dataset_dir'], "CelebA-HQ-mask/Overall_mask", "%d.png"%idx) for idx in range(28000, 30000)]) 
             self.labels_vis =  sorted([osp.join(args['dataset_dir'], "vis", "%d.png"%idx) for idx in range(28000, 30000)]) if self.load_vis_img else None
         else:
-            data_path="intermediate_renact/results_2"
+            
             ref_img_path="dataset/FaceData/CelebAMask-HQ/Val_cropped"
             ref_img_mask_path="dataset/FaceData/CelebAMask-HQ/Val_cropped_mask"
-            # self.imgs=sorted([osp.join(data_path, "%d.jpg"%idx) for idx in range(28000, 29000)])
+            
             
             self.imgs = sorted([osp.join(args['dataset_dir'], "CelebA-HQ-img", "%d.jpg"%idx) for idx in range(28000, 29000)])
             
@@ -199,10 +199,8 @@ class CelebAdataset(data.Dataset):
             self.ref_imgs= self.ref_imgs[:int(len(self.imgs)*self.fraction)]
             self.ref_labels= self.ref_labels[:int(len(self.labels)*self.fraction)]
             self.ref_labels_vis= self.ref_labels_vis[:int(len(self.labels_vis)*self.fraction)]  if self.load_vis_img else None
-            # intermediate_results_261/results/000000028000.jpg
-            if self.load_prior:
-                # self.prior_images=sorted([osp.join("intermediate_results_261/results", "0000000%d.jpg"%idx) for idx in range(28000, 29000)])
-                self.prior_images=sorted([osp.join("intermediate_renact/results_2", "%d.jpg"%idx) for idx in range(28000, 29000)])
+            
+            
         self.imgs= self.imgs[:int(len(self.imgs)*self.fraction)]
         self.labels= self.labels[:int(len(self.labels)*self.fraction)]
         self.labels_vis= self.labels_vis[:int(len(self.labels_vis)*self.fraction)]  if self.load_vis_img else None
@@ -237,10 +235,7 @@ class CelebAdataset(data.Dataset):
         label = self.labels[index]
         # print(label)
         label = Image.open(label).convert('L')
-        # breakpoint()
-        # label2=TO_TENSOR(label)
-        # save_image(label2, str(index)+'_label.png')
-        # save_image(img, str(index)+'_img.png')  
+     
         
         if self.label_transform is not None:
             label= self.label_transform(label)
@@ -252,8 +247,7 @@ class CelebAdataset(data.Dataset):
             label_vis = TO_TENSOR(label_vis)
         else:
             label_vis = -1  # unified interface
-        # save_image(label, str(index)+'_label.png')
-        # save_image(img, str(index)+'_img.png')  
+      
 
         return img, label, label_vis
   
@@ -366,7 +360,7 @@ class CelebAdataset(data.Dataset):
             prior_image_tensor=get_tensor()(prior_img)
             # prior_image_tensor = prior_img
         else:
-            prior_image_tensor = None
+            prior_image_tensor = image_tensor
         
         if self.Fullmask:
             return image_tensor,prior_image_tensor, {"inpaint_image":inpaint_tensor,"inpaint_mask":mask_img_full,"ref_imgs":ref_image_tensor},str(index).zfill(12)
@@ -453,7 +447,7 @@ class CelebAdataset(data.Dataset):
             prior_image_tensor=get_tensor()(prior_img)
             # prior_image_tensor = prior_img
         else:
-            prior_image_tensor = None
+            prior_image_tensor = image_tensor
     
         return image_tensor,prior_image_tensor, {"inpaint_image":inpaint_tensor,"inpaint_mask":mask_tensor,"ref_imgs":ref_image_tensor},str(index).zfill(12)
   
@@ -471,7 +465,6 @@ class FFHQdataset(data.Dataset):
         self.load_vis_img=load_vis_img
         self.state=state
         self.args=args
-        self.load_prior=False
         self.kernel = np.ones((1, 1), np.uint8)
         self.Fullmask=False
         self.random_trans=A.Compose([
@@ -519,8 +512,7 @@ class FFHQdataset(data.Dataset):
             self.ref_imgs= self.ref_imgs[:int(len(self.imgs)*self.fraction)]
             self.ref_labels= self.ref_labels[:int(len(self.labels)*self.fraction)]
 
-            if self.load_prior:
-                self.prior_images=sorted([osp.join("intermediate_results_FFHQ_261/results", "0000000%d.jpg"%idx) for idx in range(68000, 69000)])
+            
             
         self.imgs= self.imgs[:int(len(self.imgs)*self.fraction)]
         self.labels= self.labels[:int(len(self.labels)*self.fraction)]

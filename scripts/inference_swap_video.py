@@ -573,7 +573,7 @@ def main():
         start_code = start_code.unsqueeze(0).repeat(batch_size, 1, 1, 1)
 
    
-    use_prior=True
+    use_prior=False
     
     precision_scope = autocast if opt.precision=="autocast" else nullcontext
     sample=0

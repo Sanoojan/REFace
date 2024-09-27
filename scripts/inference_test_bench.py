@@ -16,7 +16,7 @@ from torch import autocast
 from contextlib import contextmanager, nullcontext
 import torchvision
 from ldm.util import instantiate_from_config
-from ldm.models.diffusion.ddim_guided import DDIMSampler as DDIMSampler_guided
+
 from ldm.models.diffusion.ddim import DDIMSampler
 from ldm.models.diffusion.plms import PLMSSampler
 
@@ -336,10 +336,8 @@ def main():
     if opt.plms:
         sampler = PLMSSampler(model)
     else:
-        if opt.Guidance:
-            sampler = DDIMSampler_guided(model)
-        else:
-            sampler = DDIMSampler(model)
+        sampler = DDIMSampler(model)
+
 
     os.makedirs(opt.outdir, exist_ok=True)
     outpath = opt.outdir

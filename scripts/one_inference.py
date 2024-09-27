@@ -639,7 +639,7 @@ def run_inference():
             start_code = torch.randn([opt.n_samples, opt.C, opt.H // opt.f, opt.W // opt.f], device=device)
 
 
-        use_prior=True
+        use_prior=False
         
         precision_scope = autocast if opt.precision=="autocast" else nullcontext
         sample=0

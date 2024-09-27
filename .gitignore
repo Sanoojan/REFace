@@ -31,7 +31,7 @@ Other_dependencies/Hopenet_pose/hopenet_robust_alpha1.pkl
 Other_dependencies/DLIB_landmark_det/shape_predictor_68_face_landmarks.dat
 
 # Qantitative results
-Quantitative_Grad_Other_swappers/*
+Quantitative_Analysis/*
 
 # unwanted files
 niqe
@@ -41,4 +41,5 @@ niqe
 dataset/*
 
 
-
+# results
+results/*

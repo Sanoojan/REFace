@@ -28,8 +28,5 @@ CUDA_VISIBLE_DEVICES=${device} python scripts/inference_swap_video.py \
     --scale 3 \
     --ddim_steps 30 
 
-
-    # --Start_from_target \
-    # --target_start_noise_t 1000  
     
 

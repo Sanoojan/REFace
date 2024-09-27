@@ -116,6 +116,8 @@ dataset/FaceData
 │  │  │   ├── ...
 ```
 
+To create Overall mask from CelebAHQ datasets masks, simply use process_CelebA_mask.py
+
 ### Download the pretrained model of Stable Diffusion
 We utilize the pretrained Stable Diffusion v1-4 as initialization, please download the pretrained models from [Hugging Face](https://huggingface.co/CompVis/stable-diffusion-v-1-4-original) and save the model to directory `pretrained_models`. Then run the following script to add zero-initialized weights for 5 additional input channels of the UNet (4 for the encoded masked-image and 1 for the mask itself).
 ```
@@ -139,11 +141,26 @@ sh train.sh
 ## Test Benchmark
 We build a test benchmark for quantitative analysis. 
 
-## Quantitative Results
-By default we assume the original dataset images, selected source images and target images  and corresponding swapped images are generated. To evaluate the face swapping in terms if FID, ID retrieval, Pose and Expression simply run:
+To prepare FFHQ masks, run
+
+```
+python scripts/esitmate_FFHQ_mask.py --seg12
+```
+
+To get the face swapping outcomes on CelebA and FFHQ datasets run,
 
 ```
 bash inference_test_bench.sh
+```
+
+
+## Quantitative Results
+
+
+By default we assume the original dataset images, selected source, target and masks and corresponding swapped images are generated. To evaluate the face swapping in terms if FID, ID retrieval, Pose and Expression simply run:
+
+```
+bash evaluate_all.sh
 ```
 
 
