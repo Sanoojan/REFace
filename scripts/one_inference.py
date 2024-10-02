@@ -514,7 +514,7 @@ def process_images_endpoint():
     return jsonify({
         'input_image1': f"data:image/jpeg;base64,{input_image1}",
         'input_image2': f"data:image/jpeg;base64,{input_image2}",
-        'output_image': f"data:image/jpeg;base64,{output_image}"
+        'output_image_url': f"data:image/jpeg;base64,{output_image}"
     })
 
 
