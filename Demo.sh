@@ -4,7 +4,7 @@ name="One_output"
 Results_dir="examples/FaceSwap/${name}/results"
 Base_dir="examples/FaceSwap/${name}/Outs"
 Results_out="examples/FaceSwap/${name}/results/results" 
-device=0
+device=6
 
 CONFIG="models/REFace/configs/project_ffhq.yaml"
 CKPT="models/REFace/checkpoints/saved.ckpt"

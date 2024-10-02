@@ -444,7 +444,7 @@ app = Flask(__name__)
 
 
 
-def process_images(image1, image2):
+def process_images(image1, image2, steps=50, scale=3.5):
     # Open images
     Source = Image.open(image1)
     Target = Image.open(image2)
@@ -462,7 +462,7 @@ def process_images(image1, image2):
     Target.save('examples/FaceSwap/One_target/target.jpg')
     
     # Run inference (custom function for face swapping)
-    run_inference()
+    run_inference(scale=scale, steps=steps)
     
     # Load the output image from the results
     new_image = Image.open('examples/FaceSwap/One_output/results/results/0/000000000000.png')
@@ -494,7 +494,8 @@ def index():
 def process_images_endpoint():
     image1 = request.files['image1']
     image2 = request.files['image2']
-
+    steps = request.form['steps']  # Capture the steps value
+    scale = request.form['scale']  # Capture the scale value
     # Read the images and reset the file pointer to the beginning
     image1_data = image1.read()
     image2_data = image2.read()
@@ -506,7 +507,7 @@ def process_images_endpoint():
     input_image2 = base64.b64encode(image2_data).decode('utf-8')
 
     # Process images
-    output_image_io = process_images(image1, image2)
+    output_image_io = process_images(image1, image2, steps=int(steps), scale=float(scale))
     output_image = base64.b64encode(output_image_io.getvalue()).decode('utf-8')
 
     # Return input and output images in base64 format
@@ -517,7 +518,10 @@ def process_images_endpoint():
     })
 
 
-def run_inference():
+def run_inference(scale=3.5, steps=50):
+    opt.ddim_steps=steps
+    opt.scale=scale
+    
     reset_cnt=0
     for i,im in enumerate(os.listdir(target_path)):
         im_name=os.path.basename(im)

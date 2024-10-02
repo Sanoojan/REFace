@@ -23,9 +23,15 @@
 
         form {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: space-between;
+            align-items: flex-start;
             margin-bottom: 20px;
+            width: 60%;
+        }
+
+        .input-container, .slider-container {
+            display: flex;
+            flex-direction: column;
         }
 
         .custom-file-input {
@@ -53,6 +59,23 @@
             font-weight: bold;
         }
 
+        .slider-container {
+            margin-top: 0;
+            margin-left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Aligns sliders and button to the center */
+        }
+
+        .slider-container label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .slider-container input {
+            width: 300px;
+        }
+
         button {
             padding: 10px 20px;
             font-size: 16px;
@@ -61,6 +84,8 @@
             border: none;
             cursor: pointer;
             border-radius: 5px;
+            margin-top: 20px;
+            align-self: center; /* Centers the button */
         }
 
         button:hover {
@@ -71,6 +96,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-top: 20px;
         }
 
         #outputImages {
@@ -79,20 +105,27 @@
             gap: 30px;
         }
 
-        .image-container {
-            text-align: center;
-        }
-
-        img {
-            margin: 10px;
+        .image-box {
+            width: 300px;
+            height: 300px;
             border: 2px solid #ddd;
             border-radius: 5px;
+            background-color: #e0e0e0; /* Placeholder color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #555;
+            background-size: contain; /* Ensure images are contained within the box */
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         label {
             font-weight: bold;
             margin-bottom: 5px;
             display: block;
+            text-align: center;
         }
 
         /* Loading Spinner Styles */
@@ -120,12 +153,22 @@
                 padding: 10px;
             }
 
+            form {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .input-container, .slider-container {
+                width: 100%;
+                align-items: center;
+            }
+
             #outputImages {
                 flex-direction: column;
                 align-items: center;
             }
 
-            img {
+            .image-box {
                 width: 100%;
             }
         }
@@ -141,15 +184,34 @@
     <h2>Realistic and Efficient Face Swapping: A Unified Approach with Diffusion Models (WACV 2025)</h2>
 
     <form id="uploadForm" enctype="multipart/form-data">
-        <label for="image1" class="file-label">Upload Source Image</label>
-        <input type="file" id="image1" class="custom-file-input" name="Source Image" accept="image/*" required>
-        <span id="sourceFileName" class="file-name"></span>
-        
-        <label for="image2" class="file-label">Upload Target Image</label>
-        <input type="file" id="image2" class="custom-file-input" name="Source Image" accept="image/*" required>
-        <span id="targetFileName" class="file-name"></span>
-        
-        <button type="submit">Submit</button>
+        <!-- Left: Image Inputs -->
+        <div class="input-container">
+            <label for="image1" class="file-label">Upload Source Image</label>
+            <input type="file" id="image1" class="custom-file-input" name="Source Image" accept="image/*" required>
+            <span id="sourceFileName" class="file-name"></span>
+            
+            <label for="image2" class="file-label">Upload Target Image</label>
+            <input type="file" id="image2" class="custom-file-input" name="Source Image" accept="image/*" required>
+            <span id="targetFileName" class="file-name"></span>
+        </div>
+
+        <!-- Right: Sliders and Centered Submit Button -->
+        <div class="slider-container">
+            <!-- Steps Slider -->
+            <div>
+                <label for="steps">Steps: <span id="stepsValue">30</span></label>
+                <input type="range" id="steps" name="steps" min="5" max="50" value="30">
+            </div>
+
+            <!-- Scale Slider -->
+            <div>
+                <label for="scale">Scale: <span id="scaleValue">3.5</span></label>
+                <input type="range" id="scale" name="scale" min="1" max="5" step="0.1" value="3.5">
+            </div>
+
+            <!-- Submit Button (Centered) -->
+            <button type="submit">Submit</button>
+        </div>
     </form>
 
     <div id="loading">
@@ -159,22 +221,24 @@
     <div id="output">
         <h2>Images</h2>
         <div id="outputImages">
+            <!-- Placeholder Boxes for the Images -->
             <div class="image-container">
                 <label for="inputImage1">Source Image</label>
-                <img id="inputImage1" src="" alt="Source Image" width="300">
+                <div id="inputImage1" class="image-box">Source Image Box</div>
             </div>
             <div class="image-container">
                 <label for="inputImage2">Target Image</label>
-                <img id="inputImage2" src="" alt="Target Image" width="300">
+                <div id="inputImage2" class="image-box">Target Image Box</div>
             </div>
             <div class="image-container">
                 <label for="outputImage">Swapped Image</label>
-                <img id="outputImage" src="" alt="Output Image" width="300">
+                <div id="outputImage" class="image-box">Swapped Image Box</div>
             </div>
         </div>
     </div>
 
     <script>
+        // Show file names for uploaded images
         document.getElementById('image1').addEventListener('change', function() {
             const fileName = this.files[0] ? this.files[0].name : '';
             document.getElementById('sourceFileName').textContent = fileName;
@@ -185,11 +249,28 @@
             document.getElementById('targetFileName').textContent = fileName;
         });
 
+        // Update slider values in real-time
+        const stepsSlider = document.getElementById('steps');
+        const scaleSlider = document.getElementById('scale');
+        const stepsValue = document.getElementById('stepsValue');
+        const scaleValue = document.getElementById('scaleValue');
+
+        stepsSlider.addEventListener('input', function() {
+            stepsValue.textContent = this.value;
+        });
+
+        scaleSlider.addEventListener('input', function() {
+            scaleValue.textContent = this.value;
+        });
+
+        // Handle form submission
         document.getElementById('uploadForm').onsubmit = async function(event) {
             event.preventDefault();
             const formData = new FormData();
             formData.append('image1', document.getElementById('image1').files[0]);
             formData.append('image2', document.getElementById('image2').files[0]);
+            formData.append('steps', document.getElementById('steps').value);
+            formData.append('scale', document.getElementById('scale').value);
 
             // Show loading spinner
             document.getElementById('loading').style.display = 'block';
@@ -200,16 +281,27 @@
             });
             const result = await response.json();
 
-            document.getElementById('inputImage1').src = result.input_image1;
-            document.getElementById('inputImage2').src = result.input_image2;
-            document.getElementById('outputImage').src = result.output_image;
+            // Set the source image backgrounds and clear text if image is loaded
+            const inputImage1 = document.getElementById('inputImage1');
+            const inputImage2 = document.getElementById('inputImage2');
+            const outputImage = document.getElementById('outputImage');
+
+            if (result.input_image1) {
+                inputImage1.style.backgroundImage = `url(${result.input_image1})`;
+                inputImage1.textContent = ''; // Clear text if image is loaded
+            }
+            if (result.input_image2) {
+                inputImage2.style.backgroundImage = `url(${result.input_image2})`;
+                inputImage2.textContent = ''; // Clear text if image is loaded
+            }
+            if (result.output_image) {
+                outputImage.style.backgroundImage = `url(${result.output_image})`;
+                outputImage.textContent = ''; // Clear text if image is loaded
+            }
 
             // Hide loading spinner
             document.getElementById('loading').style.display = 'none';
-
-            // Scroll back to the top after processing to see the title
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
+        }
     </script>
 </body>
 </html>
