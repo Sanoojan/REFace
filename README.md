@@ -187,4 +187,4 @@ Please open a GitHub issue for any help. If you have any questions regarding the
 
 ## License
 
-This project is licensed under the **MIT License**. See **License.txt** for additional restrictions under **Notes**.
+This project is licensed under the **MIT License**. See **License** for additional restrictions under **Notes**.
