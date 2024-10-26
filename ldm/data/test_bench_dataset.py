@@ -467,6 +467,7 @@ class FFHQdataset(data.Dataset):
         self.args=args
         self.kernel = np.ones((1, 1), np.uint8)
         self.Fullmask=False
+        self.load_prior=False
         self.random_trans=A.Compose([
             A.Resize(height=224,width=224),
             A.HorizontalFlip(p=0.5),
@@ -833,87 +834,7 @@ class FFdataset(data.Dataset):
         
         return image_tensor,prior_image_tensor, {"inpaint_image":inpaint_tensor,"inpaint_mask":mask_tensor,"ref_imgs":ref_image_tensor},str(index).zfill(12)
      
-    #  def __getitem__(self, index):
-    #     # uses the black mask in reference
-        
-    #     img_path = self.imgs[index]
-    #     img_p = Image.open(img_path).convert('RGB').resize((512,512))
-
-
-    #     mask_path = self.labels[index]
-    #     mask_img = Image.open(mask_path).convert('L').resize((512,512))
-    #     mask_img = np.array(mask_img)  # Convert the label to a NumPy array if it's not already
-
-    #     # Create a mask to preserve values in the 'preserve' list
-        
-    #     preserve = [1,2,3,5,6,7,9] #FFHQ
-        
-    #     mask = np.isin(mask_img, preserve)
-
-    #     # Create a converted_mask where preserved values are set to 255
-    #     converted_mask = np.zeros_like(mask_img)
-    #     converted_mask[mask] = 255
-    #     # convert to PIL image
-    #     mask_img=Image.fromarray(converted_mask).convert('L')
-
-
-
-    #     ### Get reference
-    #     ref_img_path = self.ref_imgs[index]
-    #     img_p_np=cv2.imread(ref_img_path)
-    #     # ref_img = Image.open(ref_img_path).convert('RGB').resize((224,224))
-    #     ref_img = cv2.cvtColor(img_p_np, cv2.COLOR_BGR2RGB)
-    #     # ref_img= cv2.resize(ref_img, (224, 224))
-        
-    #     ref_mask_path = self.ref_labels[index]
-    #     ref_mask_img = Image.open(ref_mask_path).convert('L')
-    #     ref_mask_img = np.array(ref_mask_img)  # Convert the label to a NumPy array if it's not already
-
-    #     # Create a mask to preserve values in the 'preserve' list
-    #     preserve = [1,2,3,5,6,7,9] #FFHQ
-    #     ref_mask= np.isin(ref_mask_img, preserve)
-
-    #     # Create a converted_mask where preserved values are set to 255
-    #     ref_converted_mask = np.zeros_like(ref_mask_img)
-    #     ref_converted_mask[ref_mask] = 255
-    #     ref_converted_mask=Image.fromarray(ref_converted_mask).convert('L')
-    #     # convert to PIL image
-        
-        
-    #     ref_mask_img=Image.fromarray(ref_img).convert('L')
-    #     ref_mask_img_r = ref_converted_mask.resize(img_p_np.shape[1::-1], Image.NEAREST)
-    #     ref_mask_img_r = np.array(ref_mask_img_r)
-    #     ref_img[ref_mask_img_r==0]=0
-        
-    #     ref_img=self.trans(image=ref_img)
-    #     ref_img=Image.fromarray(ref_img["image"])
-    #     ref_img=get_tensor_clip()(ref_img)
-        
-    #     ref_image_tensor = ref_img.unsqueeze(0)
-        
-        
-
-
-    #     ### Crop input image
-    #     image_tensor = get_tensor()(img_p)
-    #     W,H = img_p.size
-
-
-
-    #     mask_tensor=1-get_tensor(normalize=False, toTensor=True)(mask_img)
-
-    #     inpaint_tensor=image_tensor*mask_tensor
-        
-    #     if self.load_prior:
-    #         prior_img_path = self.prior_images[index]
-    #         prior_img = Image.open(prior_img_path).convert('RGB').resize((512,512))
-    #         prior_image_tensor=get_tensor()(prior_img)
-    #         # prior_image_tensor = prior_img
-    #     else:
-    #         prior_image_tensor = image_tensor
-    
-    #     return image_tensor,prior_image_tensor, {"inpaint_image":inpaint_tensor,"inpaint_mask":mask_tensor,"ref_imgs":ref_image_tensor},str(index).zfill(12)
-
+    # 
 
     def __len__(self):
         return self.length
