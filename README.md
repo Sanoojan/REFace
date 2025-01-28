@@ -1,6 +1,6 @@
 # REFace
 
-This repository gives the official implementation of Realistic and Efficient Face Swapping: A Unified Approach with Diffusion Models (WACV 2025)
+This repository gives the official implementation of Realistic and Efficient Face Swapping: A Unified Approach with Diffusion Models (WACV 2025 - Oral)
 
 ![Example](assets/teaser2.jpeg)
 ### [Paper](https://arxiv.org/abs/2409.07269)
