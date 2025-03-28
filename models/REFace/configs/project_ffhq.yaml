@@ -98,7 +98,7 @@ model:
           LPIPS_loss_weight: 0.1
           Landmark_loss_weight: 0
 data:
-  target: main_swap.DataModuleFromConfig
+  target: main.DataModuleFromConfig
   params:
     batch_size: 1
     wrap: false

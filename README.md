@@ -125,7 +125,7 @@ python scripts/modify_checkpoints.py
 ```
 
 ### Training REFace
-To train a new model on CelebAHQ, you can use `main_swap.py`. For example,
+To train a new model on CelebAHQ, you can use `main.py`. For example,
 ```
 python -u main_swap.py \
 --logdir models/REFace/ \

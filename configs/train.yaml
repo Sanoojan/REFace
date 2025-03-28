@@ -94,7 +94,7 @@ model:
       
 
 data:
-  target: main_swap.DataModuleFromConfig
+  target: main.DataModuleFromConfig
   params:
       batch_size: 1
       wrap: False
